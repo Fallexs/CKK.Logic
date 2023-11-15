@@ -1,15 +1,15 @@
 ﻿namespace CKK.Logic {
     public class Store {
-        private int _Id;
+        private int _id;
         private string? _name;
         private Product? _product1;
         private Product? _product2;
         private Product? _product3;
 
-        public int GetId() => _Id;
+        public int GetId() => _id;
         public string GetName() => _name ?? "Null";
 
-        public void SetId(int id) => _Id = id;
+        public void SetId(int id) => _id = id;
         public void SetName(string name) => _name = name;
 
         public void AddStoreItem(Product prod) {
@@ -39,8 +39,9 @@
                 return _product2;
             } else if( productNumber == 3 && _product3 != null ) {
                 return _product3;
+            } else {
+                return null;
             }
-            return null;
         }
 
         public Product? FindStoreItemById(int id) {
@@ -50,8 +51,9 @@
                 return _product2;
             } else if( _product3?.GetId() == id ) {
                 return _product3;
+            } else {
+                return null;
             }
-            return null;
         }
     }
 }

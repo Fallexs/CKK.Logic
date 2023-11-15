@@ -1,15 +1,15 @@
 ﻿namespace CKK.Logic {
     public class Customer {
-        private int _Id;
+        private int _id;
         private string? _name;
         private string? _address;
 
-        public int GetId() => _Id;
+        public int GetId() => _id;
         public string GetName() => _name ?? "Null";
         public string GetAddress() => _address ?? "Null";
 
         public void SetId(int id) {
-            _Id = id;
+            _id = id;
         }
 
         public void SetName(string name) {
