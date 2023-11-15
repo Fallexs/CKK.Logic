@@ -1,27 +1,19 @@
 ﻿namespace CKK.Logic.Models {
     public class Customer {
-        private int _id;
-        private string _name;
-        private string _address;
+        private int _Id;
+        private string? _name;
+        private string? _address;
 
-        public int GetId() {
-            return _id;
-        }
+        public int GetId() => _Id;
+        public string GetName() => _name ?? "Null";
+        public string GetAddress() => _address ?? "Null";
 
         public void SetId(int id) {
-            _id = id;
-        }
-
-        public string GetName() {
-            return _name;
+            _Id = id;
         }
 
         public void SetName(string name) {
             _name = name;
-        }
-
-        public string GetAddress() {
-            return _address;
         }
 
         public void SetAddress(string address) {
