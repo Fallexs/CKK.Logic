@@ -1,4 +1,4 @@
-﻿namespace CKK.Logic.Models {
+﻿namespace Models {
     public class ShoppingCartItem {
         private Product _product;
         private int _quantity;
