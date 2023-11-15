@@ -43,7 +43,7 @@
             return null;
         }
 
-        public Product? GetStoreItemById(int id) {
+        public Product? FindStoreItemById(int id) {
             if( _product1?.GetId() == id ) {
                 return _product1;
             } else if( _product2?.GetId() == id ) {
