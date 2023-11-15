@@ -1,4 +1,4 @@
-﻿namespace CKK.Logic.Models {
+﻿namespace CKK.Logic {
     public class Customer {
         private int _Id;
         private string? _name;
