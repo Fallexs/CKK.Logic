@@ -27,13 +27,14 @@
                 from e in _Products
                 where prod == e.GetProduct()
                 select e;
-            ShoppingCartItem _ = new(prod, quantity);
             if( !CheckForExisting.Any() ) {
-                _Products.Add(_);
-                return _;
-            }
+                ShoppingCartItem newItem = new(prod, quantity);
+                _Products.Add(newItem);
+                return newItem;
+            } else 
             foreach( var item in CheckForExisting ) {
                 item.SetQuantity(quantity += item.GetQuantity());
+                return item;
             }
             return null;
         }
