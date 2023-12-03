@@ -3,7 +3,6 @@
         private readonly Customer _Customer;
         private readonly List<ShoppingCartItem> _Products = new();
         public List<ShoppingCartItem> GetProducts() => _Products;
-        public ShoppingCartItem? AddProduct(Product prod) => AddProduct(prod, 1);
         public int Get_CustomerId() => _Customer.GetId();
 
         public ShoppingCart(Customer cust) {
@@ -24,12 +23,11 @@
         }
 
         public ShoppingCartItem? AddProduct(Product prod, int quantity) {
-            ShoppingCartItem _ = new(prod, quantity);
             var CheckForExisting =
                 from e in _Products
                 where prod == e.GetProduct()
                 select e;
-
+            ShoppingCartItem _ = new(prod, quantity);
             if( !CheckForExisting.Any() ) {
                 _Products.Add(_);
                 return _;
