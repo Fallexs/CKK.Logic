@@ -1,58 +1,74 @@
-﻿namespace CKK.Logic.Models {
-    public class ShoppingCart {
+﻿namespace CKK.Logic.Models
+{
+    public class ShoppingCart
+    {
         private readonly Customer _Customer;
         private readonly List<ShoppingCartItem> _Products = new();
         public List<ShoppingCartItem> GetProducts() => _Products;
         public int Get_CustomerId() => _Customer.GetId();
 
-        public ShoppingCart(Customer cust) {
+        public ShoppingCart(Customer cust)
+        {
             _Customer = cust;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod) {
+        public ShoppingCartItem? AddProduct(Product prod)
+        {
             return AddProduct(prod, 1);
         }
 
-        public ShoppingCartItem? GetProductById(int id) {
+        public ShoppingCartItem? GetProductById(int id)
+        {
             var GetByID =
                 from e in _Products
                 where id == e.GetProduct().GetId()
                 select e;
-            if( GetByID.Any() ) {
-                foreach( var item in GetByID ) {
+            if (GetByID.Any())
+            {
+                foreach (var item in GetByID)
+                {
                     return item;
                 }
             }
             return null;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod, int quantity) {
+        public ShoppingCartItem? AddProduct(Product prod, int quantity)
+        {
             ShoppingCartItem newItem = new(prod, quantity);
             var CheckForExisting =
                 from e in _Products
                 where prod == e.GetProduct()
                 select e;
-            if( quantity <= 0m ) {
+            if (quantity <= 0m)
+            {
                 return null;
             }
-            if( CheckForExisting.Any() ) {
-                foreach( var item in CheckForExisting ) {
+            if (CheckForExisting.Any())
+            {
+                foreach (var item in CheckForExisting)
+                {
                     item.SetQuantity(quantity + item.GetQuantity());
                     return item;
                 }
-            } else _Products.Add(newItem);
+            }
+            else _Products.Add(newItem);
             return newItem;
         }
 
-        public ShoppingCartItem? RemoveProduct(int id, int quantity) {
+        public ShoppingCartItem? RemoveProduct(int id, int quantity)
+        {
             var CheckForExisting =
                 from e in _Products
                 where id == e.GetProduct().GetId()
                 select e;
-            if( CheckForExisting.Any() ) {
-                foreach( var item in CheckForExisting ) {
+            if (CheckForExisting.Any())
+            {
+                foreach (var item in CheckForExisting)
+                {
                     item.SetQuantity(item.GetQuantity() - quantity);
-                    if( item.GetQuantity() <= 0m ) {
+                    if (item.GetQuantity() <= 0m)
+                    {
                         item.SetQuantity(0);
                         _Products.Remove(item);
                     }
@@ -62,14 +78,17 @@
             return null;
         }
 
-        public decimal? GetTotal() {
+        public decimal? GetTotal()
+        {
             var GetTotal =
                 from e in _Products
                 let TotalPrice = e.GetProduct().GetPrice() * e.GetQuantity()
                 select TotalPrice;
-            if( GetTotal.Any() ) {
+            if (GetTotal.Any())
+            {
                 decimal starting = 0m;
-                foreach( var item in GetTotal ) {
+                foreach (var item in GetTotal)
+                {
                     starting += item;
                 }
                 return starting;
