@@ -1,0 +1,12 @@
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\bin\Debug\net6.0\CKK.Logic.deps.json
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\bin\Debug\net6.0\CKK.Logic.dll
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\bin\Debug\net6.0\CKK.Logic.pdb
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\CKK.Logic.GeneratedMSBuildEditorConfig.editorconfig
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\CKK.Logic.AssemblyInfoInputs.cache
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\CKK.Logic.AssemblyInfo.cs
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\CKK.Logic.csproj.CoreCompileInputs.cache
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\CKK.Logic.dll
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\refint\CKK.Logic.dll
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\CKK.Logic.pdb
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\ref\CKK.Logic.dll
+E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\obj\Debug\net6.0\CKK.Logic.sourcelink.json
