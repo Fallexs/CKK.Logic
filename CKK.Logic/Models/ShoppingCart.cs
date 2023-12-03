@@ -31,20 +31,23 @@
                 from e in _Products
                 where prod == e.GetProduct()
                 select e;
-            if (quantity <= 0m && !(quantity > 0)) {
+            if( quantity <= 0m ) {
                 return null;
             }
             if( !CheckForExisting.Any() ) {
                 ShoppingCartItem newItem = new(prod, quantity);
                 _Products.Add(newItem);
                 return newItem;
-            } else 
-            foreach( var item in CheckForExisting ) {
-                item.SetQuantity(item.GetQuantity() + quantity);
-                return item;
+            } else {
+                foreach( var item in CheckForExisting ) {
+                    item.SetQuantity(item.GetQuantity() + quantity);
+                    return item;
+                }
+
             }
             return null;
         }
+    }
 
         public ShoppingCartItem? RemoveProduct(int id, int quantity) {
             var CheckForExisting =
