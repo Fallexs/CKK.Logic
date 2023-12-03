@@ -22,3 +22,15 @@ E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\CKK.Logic\CKK.Logic\obj
 E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\CKK.Logic\CKK.Logic\obj\Debug\net6.0\refint\CKK.Logic.dll
 E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.pdb
 E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\CKK.Logic\CKK.Logic\obj\Debug\net6.0\ref\CKK.Logic.dll
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\bin\Debug\net6.0\CKK.Logic.deps.json
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\bin\Debug\net6.0\CKK.Logic.dll
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\bin\Debug\net6.0\CKK.Logic.pdb
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.GeneratedMSBuildEditorConfig.editorconfig
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.AssemblyInfoInputs.cache
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.AssemblyInfo.cs
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.csproj.CoreCompileInputs.cache
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.sourcelink.json
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.dll
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\refint\CKK.Logic.dll
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\CKK.Logic.pdb
+f:\CKK.Logic CLONE\CKK.Logic\CKK.Logic\obj\Debug\net6.0\ref\CKK.Logic.dll

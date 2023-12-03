@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CKK.tests
-build_property.ProjectDir = E:\School Work\PROG1070 (Structured Project 1)\CKK.Logic\CKK.Logic\CKK.tests\
+build_property.ProjectDir = F:\CKK.Logic CLONE\CKK.Logic\CKK.tests\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
