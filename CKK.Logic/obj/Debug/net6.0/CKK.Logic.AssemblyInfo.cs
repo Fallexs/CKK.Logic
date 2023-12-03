@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CKK.Logic")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+151e497a77fceb0eab328c00599ab035e74c0c7f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5998393e9dd261c356ab2b7b93def314f9d2b0c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CKK.Logic")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CKK.Logic")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -9,6 +9,10 @@
             _Customer = cust;
         }
 
+        public ShoppingCartItem? AddProduct(Product prod) {
+            return AddProduct(prod, 1);
+        }
+
         public ShoppingCartItem? GetProductById(int id) {
             var GetByID =
                 from e in _Products
@@ -62,9 +66,11 @@
                 let TotalPrice = e.GetProduct().GetPrice() * e.GetQuantity()
                 select TotalPrice;
             if( GetTotal.Any() ) {
+                decimal starting = 0;
                 foreach( var item in GetTotal ) {
-                    return item;
+                    starting += item;
                 }
+                return starting;
             }
             return null;
         }
