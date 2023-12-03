@@ -37,7 +37,7 @@
                 return newItem;
             } else 
             foreach( var item in CheckForExisting ) {
-                item.SetQuantity(quantity += item.GetQuantity());
+                item.SetQuantity(item.GetQuantity() + quantity);
                 return item;
             }
             return null;
@@ -51,7 +51,8 @@
             if( CheckForExisting.Any() ) {
                 foreach( var item in CheckForExisting ) {
                     item.SetQuantity(item.GetQuantity() - quantity);
-                    if( item.GetQuantity() < 0 ) {
+                    if( item.GetQuantity() < 0m ) {
+                        item.SetQuantity(0);
                         _Products.Remove(item);
                         return item;
                     }
