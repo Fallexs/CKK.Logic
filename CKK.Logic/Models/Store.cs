@@ -2,7 +2,7 @@
     public class Store {
         private int _id;
         private string? _name;
-        private readonly List<StoreItem> _items = new();
+        private List<StoreItem> _items = new();
         public int GetId() => _id;
         public string GetName() => _name ?? "Null";
         public void SetId(int id) => _id = id;
@@ -10,18 +10,19 @@
         public List<StoreItem> GetStoreItems() => _items;
 
         public StoreItem? AddStoreItem(Product prod, int quantity) {
-            StoreItem _ = new(prod, quantity);
+            StoreItem newItem = new(prod, quantity);
             var SameStoreItem =
                 from e in _items
                 where prod == e.GetProduct()
                 select e;
 
             if( !SameStoreItem.Any() ) {
-                _items.Add(_);
-                return _;
+                _items.Add(newItem);
+                return newItem;
             }
             foreach( var item in SameStoreItem ) {
-                item.SetQuantity(quantity += item.GetQuantity());
+                item.SetQuantity(item.GetQuantity() + quantity);
+                return item;
             }
             return null;
         }
@@ -37,6 +38,7 @@
                     if(item.GetQuantity() < 0) {
                         item.SetQuantity(0);
                     }
+                    return item;
                 }
             }
             return null;
