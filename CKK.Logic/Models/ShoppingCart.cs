@@ -31,7 +31,7 @@
                 from e in _Products
                 where prod == e.GetProduct()
                 select e;
-            if (quantity <= 0m) {
+            if (quantity <= 0m && !(quantity > 0)) {
                 return null;
             }
             if( !CheckForExisting.Any() ) {
