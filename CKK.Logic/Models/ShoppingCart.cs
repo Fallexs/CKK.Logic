@@ -31,6 +31,9 @@
                 from e in _Products
                 where prod == e.GetProduct()
                 select e;
+            if (quantity <= 0m) {
+                return null;
+            }
             if( !CheckForExisting.Any() ) {
                 ShoppingCartItem newItem = new(prod, quantity);
                 _Products.Add(newItem);
@@ -51,11 +54,11 @@
             if( CheckForExisting.Any() ) {
                 foreach( var item in CheckForExisting ) {
                     item.SetQuantity(item.GetQuantity() - quantity);
-                    if( item.GetQuantity() < 0m ) {
+                    if( item.GetQuantity() <= 0m ) {
                         item.SetQuantity(0);
                         _Products.Remove(item);
-                        return item;
                     }
+                    return item;
                 }
             }
             return null;
@@ -67,7 +70,7 @@
                 let TotalPrice = e.GetProduct().GetPrice() * e.GetQuantity()
                 select TotalPrice;
             if( GetTotal.Any() ) {
-                decimal starting = 0;
+                decimal starting = 0m;
                 foreach( var item in GetTotal ) {
                     starting += item;
                 }
