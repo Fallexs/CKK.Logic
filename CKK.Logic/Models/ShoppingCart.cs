@@ -2,14 +2,14 @@
 {
     public class ShoppingCart
     {
-        private readonly Customer _Customer;
-        private readonly List<ShoppingCartItem> _Products = new();
+        private Customer _customer { get; set; }
+        private List<ShoppingCartItem> _Products { get; set; } = new();
         public List<ShoppingCartItem> GetProducts() => _Products;
-        public int Get_CustomerId() => _Customer.GetId();
+        public int Get_CustomerId() => _customer.GetId();
 
         public ShoppingCart(Customer cust)
         {
-            _Customer = cust;
+            _customer = cust;
         }
 
         public ShoppingCartItem? AddProduct(Product prod)

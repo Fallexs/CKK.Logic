@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.tests\\CKK.tests.csproj": {}
+    "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.tests\\CKK.tests.csproj": {}
   },
   "projects": {
-    "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj": {
+    "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
+        "projectUniqueName": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
         "projectName": "CKK.Logic",
-        "projectPath": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
+        "projectPath": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
         "packagesPath": "C:\\Users\\Trist\\.nuget\\packages\\",
-        "outputPath": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\obj\\",
+        "outputPath": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Visual Studio\\Shared\\NuGetPackages"
@@ -63,14 +63,14 @@
         }
       }
     },
-    "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.tests\\CKK.tests.csproj": {
+    "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.tests\\CKK.tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.tests\\CKK.tests.csproj",
+        "projectUniqueName": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.tests\\CKK.tests.csproj",
         "projectName": "CKK.tests",
-        "projectPath": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.tests\\CKK.tests.csproj",
+        "projectPath": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.tests\\CKK.tests.csproj",
         "packagesPath": "C:\\Users\\Trist\\.nuget\\packages\\",
-        "outputPath": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.tests\\obj\\",
+        "outputPath": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Visual Studio\\Shared\\NuGetPackages"
@@ -91,8 +91,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj": {
-                "projectPath": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj"
+              "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj": {
+                "projectPath": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj"
               }
             }
           }
