@@ -5,7 +5,7 @@
         private decimal _price;
 
         public int GetId() => _id;
-        public string GetName() => _name ?? "Null";
+        public string? GetName() => _name;
         public decimal GetPrice() => _price;
 
         public void SetId(int id) {

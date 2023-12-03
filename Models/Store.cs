@@ -2,9 +2,7 @@
     public class Store {
         private int _id;
         private string? _name;
-        private Product? _product1;
-        private Product? _product2;
-        private Product? _product3;
+        private List<StoreItem> _items = new();
 
         public int GetId() => _id;
         public string GetName() => _name ?? "Null";
@@ -12,48 +10,54 @@
         public void SetId(int id) => _id = id;
         public void SetName(string name) => _name = name;
 
-        public void AddStoreItem(Product prod) {
-            if( _product1 == null ) {
-                _product1 = prod;
-            } else if( _product2 == null ) {
-                _product2 = prod;
-            } else if( _product3 == null ) {
-                _product3 = prod;
+        public StoreItem? AddStoreItem(Product prod, int quantity) {
+            StoreItem _ = new(prod, quantity);
+            var SameStoreItem =
+                from e in _items
+                where prod == e.GetProduct()
+                select e;
+
+            if( !SameStoreItem.Any() ) {
+                _items.Add(_);
+                return _;
             }
+            foreach( var item in SameStoreItem ) {
+                item.SetQuantity(quantity += item.GetQuantity());
+            }
+            return null;
         }
 
-        public void RemoveStoreItem(int productNumber) {
-            if( productNumber == 1 && _product1 != null ) {
-                _product1 = null;
-            } else if( productNumber == 2 && _product2 != null ) {
-                _product2 = null;
-            } else if( productNumber == 3 && _product3 != null ) {
-                _product3 = null;
+        public StoreItem? RemoveStoreItem(int id, int quantity) {
+            var SameStoreItem =
+                from e in _items
+                where id == e.GetProduct().GetId()
+                select e;
+            if( SameStoreItem.Any() ) {
+                foreach(var item in SameStoreItem) {
+                    item.SetQuantity(item.GetQuantity() - quantity);
+                    if(item.GetQuantity() < 0) {
+                        item.SetQuantity(0);
+                    }
+                }
             }
+            return null;
         }
 
-        public Product? GetStoreItem(int productNumber) {
-            if( productNumber == 1 && _product1 != null ) {
-                return _product1;
-            } else if( productNumber == 2 && _product2 != null ) {
-                return _product2;
-            } else if( productNumber == 3 && _product3 != null ) {
-                return _product3;
-            } else {
-                return null;
-            }
+        public List<StoreItem> GetStoreItems() {
+            return _items;
         }
 
-        public Product? FindStoreItemById(int id) {
-            if( _product1?.GetId() == id ) {
-                return _product1;
-            } else if( _product2?.GetId() == id ) {
-                return _product2;
-            } else if( _product3?.GetId() == id ) {
-                return _product3;
-            } else {
-                return null;
+        public StoreItem? FindStoreItemById(int id) {
+            var FindByID =
+                from e in _items
+                where id == e.GetProduct().GetId()
+                select e;
+            if( FindByID.Any() ) {
+                foreach(var item in FindByID) {
+                    return item;
+                }
             }
+            return null;
         }
     }
 }

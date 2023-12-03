@@ -5,8 +5,8 @@
         private string? _address;
 
         public int GetId() => _id;
-        public string GetName() => _name ?? "Null";
-        public string GetAddress() => _address ?? "Null";
+        public string? GetName() => _name;
+        public string? GetAddress() => _address;
 
         public void SetId(int id) {
             _id = id;
