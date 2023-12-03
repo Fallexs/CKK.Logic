@@ -43,10 +43,10 @@
             return null;
         }
 
-        public ShoppingCartItem? RemoveProduct(Product prod, int quantity) {
+        public ShoppingCartItem? RemoveProduct(int id, int quantity) {
             var CheckForExisting =
                 from e in _Products
-                where prod == e.GetProduct()
+                where id == e.GetProduct().GetId()
                 select e;
             if( CheckForExisting.Any() ) {
                 foreach( var item in CheckForExisting ) {
