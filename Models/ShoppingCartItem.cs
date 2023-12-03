@@ -9,7 +9,6 @@
             _product = product;
             _quantity = quantity;
         }
-
         public void SetQuantity(int quantity) {
             _quantity = quantity;
         }
@@ -18,6 +17,9 @@
             _product = product;
         }
 
-        public decimal GetTotal() => _quantity * _product.GetPrice();
+        public decimal GetTotal() {
+            return _quantity * _product.GetPrice();
+        }
+
     }
 }
