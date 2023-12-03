@@ -47,7 +47,6 @@
             }
             return null;
         }
-    }
 
         public ShoppingCartItem? RemoveProduct(int id, int quantity) {
             var CheckForExisting =
