@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.Design;
-
-namespace CKK.Logic.Models {
+﻿namespace CKK.Logic.Models {
     public class ShoppingCart {
         private readonly Customer _Customer;
         private readonly List<ShoppingCartItem> _Products = new();
@@ -17,8 +15,8 @@ namespace CKK.Logic.Models {
                 from e in _Products
                 where id == e.GetProduct().GetId()
                 select e;
-            if(GetByID.Any()) {
-                foreach(var item in GetByID) {
+            if( GetByID.Any() ) {
+                foreach( var item in GetByID ) {
                     return item;
                 }
             }
@@ -36,7 +34,7 @@ namespace CKK.Logic.Models {
                 _Products.Add(_);
                 return _;
             }
-            foreach(var item in CheckForExisting) {
+            foreach( var item in CheckForExisting ) {
                 item.SetQuantity(quantity += item.GetQuantity());
             }
             return null;
@@ -50,7 +48,7 @@ namespace CKK.Logic.Models {
             if( CheckForExisting.Any() ) {
                 foreach( var item in CheckForExisting ) {
                     item.SetQuantity(item.GetQuantity() - quantity);
-                    if( item.GetQuantity() < 0) {
+                    if( item.GetQuantity() < 0 ) {
                         _Products.Remove(item);
                         return item;
                     }
