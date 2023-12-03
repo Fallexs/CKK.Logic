@@ -27,6 +27,7 @@
         }
 
         public ShoppingCartItem? AddProduct(Product prod, int quantity) {
+            ShoppingCartItem newItem = new(prod, quantity);
             var CheckForExisting =
                 from e in _Products
                 where prod == e.GetProduct()
@@ -34,18 +35,13 @@
             if( quantity <= 0m ) {
                 return null;
             }
-            if( !CheckForExisting.Any() ) {
-                ShoppingCartItem newItem = new(prod, quantity);
-                _Products.Add(newItem);
-                return newItem;
-            } else {
+            if( CheckForExisting.Any() ) {
                 foreach( var item in CheckForExisting ) {
-                    item.SetQuantity(item.GetQuantity() + quantity);
+                    item.SetQuantity(quantity + item.GetQuantity());
                     return item;
                 }
-
-            }
-            return null;
+            } else _Products.Add(newItem);
+            return newItem;
         }
 
         public ShoppingCartItem? RemoveProduct(int id, int quantity) {
