@@ -1,4 +1,7 @@
-﻿namespace CKK.Logic.Models
+﻿using System.ComponentModel;
+using System.Reflection;
+
+namespace CKK.Logic.Models
 {
     public class ShoppingCart
     {
@@ -7,8 +10,7 @@
         public List<ShoppingCartItem> GetProducts() => _Products;
         public int Get_CustomerId() => _customer.GetId();
 
-        public ShoppingCart(Customer cust)
-        {
+        public ShoppingCart(Customer cust) {
             _customer = cust;
         }
 
@@ -25,7 +27,7 @@
                 select e;
             if (GetByID.Any())
             {
-                foreach (var item in GetByID)
+                foreach (ShoppingCartItem item in GetByID)
                 {
                     return item;
                 }
@@ -33,27 +35,21 @@
             return null;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod, int quantity)
+        public ShoppingCartItem? AddProduct(Product prod, int? quantity)
         {
-            ShoppingCartItem newItem = new(prod, quantity);
-            var CheckForExisting =
-                from e in _Products
-                where prod == e.GetProduct()
-                select e;
-            if (quantity <= 0m)
+            if (prod == null || quantity == null || quantity < 0)
             {
                 return null;
             }
-            if (CheckForExisting.Any())
-            {
-                foreach (var item in CheckForExisting)
-                {
-                    item.SetQuantity(quantity + item.GetQuantity());
-                    return item;
-                }
+
+            var GetExisting =
+                from e in _Products
+                where prod.GetId() == e.GetProduct().GetId()
+                select e;
+            foreach(ShoppingCartItem item in GetExisting) {
+                return item;
             }
-            else _Products.Add(newItem);
-            return newItem;
+            return null;
         }
 
         public ShoppingCartItem? RemoveProduct(int id, int quantity)
@@ -64,7 +60,7 @@
                 select e;
             if (CheckForExisting.Any())
             {
-                foreach (var item in CheckForExisting)
+                foreach (ShoppingCartItem item in CheckForExisting)
                 {
                     item.SetQuantity(item.GetQuantity() - quantity);
                     if (item.GetQuantity() <= 0m)

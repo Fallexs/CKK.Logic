@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
+      "projectUniqueName": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
       "projectName": "CKK.Logic",
-      "projectPath": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
+      "projectPath": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\CKK.Logic.csproj",
       "packagesPath": "C:\\Users\\Trist\\.nuget\\packages\\",
-      "outputPath": "F:\\CKK.Logic CLONE\\CKK.Logic\\CKK.Logic\\obj\\",
+      "outputPath": "E:\\School Work\\PROG1070 (Structured Project 1)\\CKK.Logic\\CKK.Logic\\CKK.Logic\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "E:\\Visual Studio\\Shared\\NuGetPackages"
