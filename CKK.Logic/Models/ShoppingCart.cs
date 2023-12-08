@@ -37,24 +37,26 @@ namespace CKK.Logic.Models
 
         public ShoppingCartItem? AddProduct(Product prod, int quantity)
         {
-            if (prod == null || quantity <= 0)
+            if (prod != null && quantity > 0)
             {
-                return null;
-            }
-
-            var GetExisting =
-                from e in _Products
-                where prod.GetId() == e.GetProduct().GetId()
-                select e;
-            if(GetExisting.Any()) {
-                foreach(ShoppingCartItem item in GetExisting) {
-                    item.SetQuantity(item.GetQuantity() + quantity);
-                    return item;
+                var GetExisting =
+                    from e in _Products
+                    where prod.GetId() == e.GetProduct().GetId()
+                    select e;
+                if (GetExisting.Any())
+                {
+                    foreach (ShoppingCartItem item in GetExisting)
+                    {
+                        item.SetQuantity(item.GetQuantity() + quantity);
+                        return item;
+                    }
                 }
-            } else {
-                var newItem = new ShoppingCartItem(prod, quantity);
-                _Products.Add(newItem);
-                return newItem;
+                else
+                {
+                    var newItem = new ShoppingCartItem(prod, quantity);
+                    _Products.Add(newItem);
+                    return newItem;
+                }
             }
             return null;
         }
