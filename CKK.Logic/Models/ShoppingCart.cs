@@ -16,7 +16,10 @@ namespace CKK.Logic.Models
 
         public ShoppingCartItem? AddProduct(Product prod)
         {
-            return AddProduct(prod, 1);
+            if (prod != null) {
+                return AddProduct(prod, 1);
+            }
+            return null;
         }
 
         public ShoppingCartItem? GetProductById(int id)
