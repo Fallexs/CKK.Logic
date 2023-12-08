@@ -39,7 +39,7 @@ namespace CKK.Logic.Models
         {
             var GetExisting =
                     from e in _Products
-                    where prod.GetId() == e.GetProduct().GetId()
+                    where prod == e.GetProduct()
                     select e;
             if (prod != null && quantity > 0)
             {
