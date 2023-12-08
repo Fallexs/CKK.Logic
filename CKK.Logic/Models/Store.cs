@@ -10,19 +10,21 @@
         public List<StoreItem> GetStoreItems() => _items;
 
         public StoreItem? AddStoreItem(Product prod, int quantity) {
-            StoreItem newItem = new(prod, quantity);
             var SameStoreItem =
                 from e in _items
                 where prod == e.GetProduct()
                 select e;
-
-            if( !SameStoreItem.Any() ) {
-                _items.Add(newItem);
-                return newItem;
-            }
-            foreach( var item in SameStoreItem ) {
-                item.SetQuantity(item.GetQuantity() + quantity);
-                return item;
+            if( prod != null && quantity > 0 ) {
+                if( SameStoreItem.Any() ) {
+                    foreach( StoreItem item in _items ) {
+                        item.SetQuantity(item.GetQuantity() + quantity);
+                        return item;
+                    }
+                } else {
+                    StoreItem item = new(prod, quantity);
+                    _items.Add(item);
+                    return item;
+                }
             }
             return null;
         }

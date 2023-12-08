@@ -14,6 +14,14 @@ namespace CKK.Logic.Models
             _customer = cust;
         }
 
+        public ShoppingCartItem? AddProduct(Product prod)
+        {
+            if (prod != null) {
+                return AddProduct(prod, 1);
+            }
+            return null;
+        }
+
         public ShoppingCartItem? GetProductById(int id)
         {
             var GetByID =
