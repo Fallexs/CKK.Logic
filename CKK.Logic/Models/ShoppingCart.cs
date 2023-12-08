@@ -35,9 +35,9 @@ namespace CKK.Logic.Models
             return null;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod, int? quantity)
+        public ShoppingCartItem? AddProduct(Product prod, int quantity)
         {
-            if (prod == null || quantity == null || quantity < 0)
+            if (prod == null || quantity <= 0)
             {
                 return null;
             }
@@ -46,8 +46,15 @@ namespace CKK.Logic.Models
                 from e in _Products
                 where prod.GetId() == e.GetProduct().GetId()
                 select e;
-            foreach(ShoppingCartItem item in GetExisting) {
-                return item;
+            if(GetExisting.Any()) {
+                foreach(ShoppingCartItem item in GetExisting) {
+                    item.SetQuantity(item.GetQuantity() + quantity);
+                    return item;
+                }
+            } else {
+                var newItem = new ShoppingCartItem(prod, quantity);
+                _Products.Add(newItem);
+                return newItem;
             }
             return null;
         }
