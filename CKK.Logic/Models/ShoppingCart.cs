@@ -50,12 +50,9 @@ namespace CKK.Logic.Models
                 foreach (var product in Products ) {
                     product.Quantity -= quant;
                     if ( product.Quantity < 0 ) {
-                        product.Quantity = 0;
                         Products.Remove(product);
-                        return product;
-                    } else {
-                        return product;
                     }
+                    return product;
                 }
                 return Existing.Single();
             }
