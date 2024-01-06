@@ -28,7 +28,7 @@ namespace CKK.Logic.Models {
                 where id == e.Product.Id
                 select e;
             var Item = FindExisting.FirstOrDefault();
-            if (quantity < 0) {
+            if (quantity <= 0) {
                 throw new ArgumentOutOfRangeException(nameof(quantity));
             } else if (Item == null) {
                 throw new ProductDoesNotExistException();
