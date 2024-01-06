@@ -29,8 +29,9 @@ namespace CKK.Logic.Models {
                 select e;
             var Item = FindExisting.First();
             if( quantity < 0 ) {
-                throw new ArgumentOutOfRangeException();
-            } else if( Item == null ) {
+                throw new ArgumentOutOfRangeException(nameof(quantity));
+            }
+            if( Item == null ) {
                 throw new ProductDoesNotExistException();
             }
             Item.Quantity -= quantity;
