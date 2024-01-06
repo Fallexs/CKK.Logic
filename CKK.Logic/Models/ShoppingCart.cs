@@ -64,7 +64,7 @@ namespace CKK.Logic.Models
 
         public ShoppingCartItem? RemoveProduct(int id, int quantity) {
             var FindExisting =
-                from e in Products
+                from e in GetProducts()
                 where id == e.Product.Id
                 select e;
             try {
@@ -73,34 +73,16 @@ namespace CKK.Logic.Models
                 } else {
                     if( FindExisting.Any() ) {
                         foreach( var item in FindExisting ) {
-                            if( item.Quantity - quantity < 0 ) {
-                                item.Quantity -= quantity;
+                            item.Quantity -= quantity;
+                            if (item.Quantity <= 0) {
                                 Products.Remove(item);
-                                return item;
-                            } else item.Quantity -= quantity; return item;
+                            }
+                            return item;
                         }
                     } else throw new ProductDoesNotExistException();
                 }
             } catch( Exception ex ) {
                 Console.WriteLine(ex.Message);
-            }
-            return null;
-        }
-
-        public decimal? GetTotal()
-        {
-            var GetTotal =
-                from e in Products
-                let TotalPrice = e.Product.Price * e.Quantity
-                select TotalPrice;
-            if (GetTotal.Any())
-            {
-                decimal starting = 0m;
-                foreach (var item in GetTotal)
-                {
-                    starting += item;
-                }
-                return starting;
             }
             return null;
         }
