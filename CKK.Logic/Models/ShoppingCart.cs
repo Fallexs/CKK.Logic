@@ -37,7 +37,7 @@ namespace CKK.Logic.Models
             }
         }
 
-        public ShoppingCartItem RemoveProduct(int id, int quant) {
+        public ShoppingCartItem? RemoveProduct(int id, int quant) {
             var Existing = (
                 from product in Products
                 where id == product.Product.Id
@@ -47,12 +47,15 @@ namespace CKK.Logic.Models
             } else if ( !Existing.Any() ) {
                 throw new ProductDoesNotExistException();
             } else {
-                Existing.Single().Quantity -= quant;
-                if( Existing.Single().Quantity <= 0 ) {
-                    Products.Remove(Existing.Single());
-                    Existing.Single().Quantity = 0;
+                foreach(ShoppingCartItem product in Existing) {
+                    product.Quantity -= quant;
+                    if (product.Quantity < 0m) {
+                        product.Quantity = 0;
+                        Products.Remove(product);
+                    }
+                    return product;
                 }
-                return Existing.Single();
+                return null;
             }
         }
         public ShoppingCartItem? GetProductById(int id) {
