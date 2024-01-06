@@ -14,41 +14,27 @@ namespace CKK.Logic.Models
         public ShoppingCart(Customer cust) {
             Customer = cust;
         }
-        public ShoppingCartItem GetProductById(int id) {
-            try {
-                if (id < 0) {
-                    throw new InvalidIdException();
-                }
-            }
-            catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
-            var Product =
-                from e in Products
-                where id == e.Product.Id
-                select e;
-            return Product.First();
-        }
 
         public ShoppingCartItem AddProduct(Product prod, int quant) {
-            var existing =
-                from e in Products
-                where prod == e.Product
-                select e;
-            try {
-                if( quant < 0 ) {
-                    throw new InventoryItemStockTooLowException();
+            if ( quant <= 0 ) {
+                throw new InventoryItemStockTooLowException();
+            } else {
+                var Existing = (
+                    from product in Products
+                    where prod == product.Product
+                    select product);
+                if ( Existing.Any() ) {
+                    foreach(var product in Products ) {
+                        product.Quantity += quant;
+                        return product;
+                    }
+                } else {
+                    var newProduct = new ShoppingCartItem(prod, quant);
+                    Products.Add(newProduct);
+                    return newProduct;
                 }
-            } catch( Exception ex ) {
-                Console.WriteLine(ex.Message);
+                return Existing.Single();
             }
-            if( existing.Any() ) {
-                existing.First().Quantity += quant;
-            }
-            var newProduct = new ShoppingCartItem(prod, quant);
-            Products.Add(newProduct);
-            return newProduct;
-
         }
 
         public ShoppingCartItem RemoveProduct(int id, int quant) {
@@ -72,6 +58,21 @@ namespace CKK.Logic.Models
                 Products.Remove(Existing.First());
             }
             return Existing.First();
+        }
+        public ShoppingCartItem GetProductById(int id) {
+            try {
+                if (id < 0) {
+                    throw new InvalidIdException();
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            var Product =
+                from e in Products
+                where id == e.Product.Id
+                select e;
+            return Product.First();
         }
 
         public decimal GetTotal() {
