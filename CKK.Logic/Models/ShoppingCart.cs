@@ -47,16 +47,10 @@ namespace CKK.Logic.Models
             } else if ( !Existing.Any() ) {
                 throw new ProductDoesNotExistException();
             } else {
-                foreach (var product in Products ) {
-                    product.Quantity = product.Quantity - quant;
-                    if ( product.Quantity == 0 ) {
-                        Products.Remove(product);
-                        return product;
-                    } else if ( product.Quantity < 0 ) {
-                        Products.Remove(product);
-                    } else {
-                        return product;
-                    }
+                Existing.Single().Quantity -= quant;
+                if( Existing.Single().Quantity <= 0 ) {
+                    Products.Remove(Existing.Single());
+                    Existing.Single().Quantity = 0;
                 }
                 return Existing.Single();
             }
