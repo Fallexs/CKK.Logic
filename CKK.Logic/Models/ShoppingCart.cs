@@ -52,14 +52,6 @@ namespace CKK.Logic.Models
             } return null;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod) {
-            if (prod != null) {
-                return AddProduct(prod, 1);
-            } else {
-                return null;
-            }
-        }
-
         public ShoppingCartItem? RemoveProduct(int id, int quant) {
             try {
                 var Existing =
