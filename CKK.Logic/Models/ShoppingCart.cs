@@ -31,19 +31,33 @@ namespace CKK.Logic.Models
             return Product as ShoppingCartItem;
         }
 
-        public ShoppingCartItem AddProduct(Product prod, int quant) {
+        public ShoppingCartItem? AddProduct(Product prod, int quant) {
             var existing =
                 from e in Products
                 where prod.Equals(e.Product)
                 select e;
-            var Product = existing.FirstOrDefault();
-            if (Product == null) {
-                Product = new ShoppingCartItem(prod, quant);
-                Products.Add(Product);
+            if (prod != null && quant > 0) {
+                if(existing.Any()) {
+                    foreach(ShoppingCartItem item in existing) {
+                        item.Quantity += quant;
+                        return item;
+                    }
+                } else {
+                    var newProduct = new ShoppingCartItem(prod, quant);
+                    Products.Add(newProduct);
+                    return newProduct;
+                }
+            } else if (quant <= 0) {
+                throw new InventoryItemStockTooLowException();
+            } return null;
+        }
+
+        public ShoppingCartItem? AddProduct(Product prod) {
+            if (prod != null) {
+                return AddProduct(prod, 1);
             } else {
-                Product.Quantity += quant;
+                return null;
             }
-            return Product;
         }
 
         public ShoppingCartItem? RemoveProduct(int id, int quant) {
