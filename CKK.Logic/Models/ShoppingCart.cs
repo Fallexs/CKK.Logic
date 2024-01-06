@@ -38,27 +38,23 @@ namespace CKK.Logic.Models
         }
 
         public ShoppingCartItem RemoveProduct(int id, int quant) {
-            var Existing = (
-                from product in Products
-                where id == product.Product.Id
-                select product);
+            var FindProduct = GetProductById(id);
             if ( quant < 0 ) {
                 throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
-            } else if ( !Existing.Any() ) {
+            } else if ( FindProduct == null ) {
                 throw new ProductDoesNotExistException();
             } else {
-                foreach(ShoppingCartItem product in Existing) {
-                    product.Quantity -= quant;
-                    if (product.Quantity > 0) {
-                        return product;
-                    } else if (product.Quantity <= 0) {
-                        Products.Remove(product);
+                    FindProduct.Quantity -= quant;
+                    if (FindProduct.Quantity > 0) {
+                        return FindProduct;
+                    } else if (FindProduct.Quantity <= 0) {
+                        Products.Remove(FindProduct);
                         return new ShoppingCartItem();
                     }
                 }
-                return Existing.Single();
+                return FindProduct;
             }
-        }
+        
         public ShoppingCartItem? GetProductById(int id) {
             if ( id < 0 ) {
                 throw new InvalidIdException();
