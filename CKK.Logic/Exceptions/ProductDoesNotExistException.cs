@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CKK.Logic.Exceptions {
     public class ProductDoesNotExistException : Exception {
-        public ProductDoesNotExistException() : base("Cannot remove product, invalid product entered!") {
-        }
+        public ProductDoesNotExistException() : base("Cannot remove product, invalid product entered!") { }
+        public ProductDoesNotExistException(string message) : base(message) { }
+        public ProductDoesNotExistException(string message, Exception inner) : base(message, inner) { }
     }
 }

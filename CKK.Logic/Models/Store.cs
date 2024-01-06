@@ -22,21 +22,20 @@ namespace CKK.Logic.Models {
             return Item;
         }
 
-        public StoreItem? RemoveStoreItem(int id, int quantity) {
+        public StoreItem RemoveStoreItem(int id, int quantity) {
             var FindExisting =
                 from e in Items
-                where id == e.Product.Id
+                where id.Equals(e.Product.Id)
                 select e;
-            var Item = FindExisting.FirstOrDefault();
-            if (quantity <= 0) {
-                throw new ArgumentOutOfRangeException(nameof(quantity));
-            } else if (Item == null) {
-                return null;
-            } else {
-                Item.Quantity -= quantity;
-                if(Item.Quantity < 0) {
-                    Item.Quantity = 0;
-                }
+            var Item = FindExisting.First();
+            if( quantity < 0 ) {
+                throw new ArgumentOutOfRangeException();
+            } else if( Item == null ) {
+                throw new ProductDoesNotExistException();
+            }
+            Item.Quantity -= quantity;
+            if( Item.Quantity < 0 ) {
+                Item.Quantity = 0;
             }
             return Item;
         }
