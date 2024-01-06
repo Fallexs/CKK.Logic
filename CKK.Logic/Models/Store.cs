@@ -64,8 +64,10 @@ namespace CKK.Logic.Models {
                     foreach (var item in Existing ) {
                         return item;
                     }
+                } else {
+                    return null;
                 }
-                return Existing.Single()??null;
+                return Existing.Single();
             }
         }
         
