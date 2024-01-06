@@ -41,7 +41,7 @@ namespace CKK.Logic.Models {
             return Item;
         }
 
-        public StoreItem FindStoreItemById(int id) {
+        public StoreItem? FindStoreItemById(int id) {
             var FindByID =
                 from e in Items
                 where id == e.Product.Id
@@ -49,9 +49,7 @@ namespace CKK.Logic.Models {
             var Item = FindByID.FirstOrDefault();
             if (id < 0) {
                 throw new InvalidIdException();
-            } else if (Item == null) {
-                throw new ProductDoesNotExistException();
-            }
+            } 
             return Item;
         }
         

@@ -51,7 +51,7 @@ namespace CKK.Logic.Models
             var Product = Existing.FirstOrDefault();
             if (Product == null) {
                 throw new ProductDoesNotExistException();
-            } else if (id < 0) {
+            } else if (id <= 0) {
                 throw new InvalidIdException();
             } else {
                 Product.Quantity -= quant;
