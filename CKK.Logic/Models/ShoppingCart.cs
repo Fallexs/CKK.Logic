@@ -26,7 +26,7 @@ namespace CKK.Logic.Models
             }
             var Product =
                 from e in Products
-                where id == e.Product?.Id
+                where id == e.Product.Id
                 select e;
             return Product as ShoppingCartItem;
         }
@@ -59,7 +59,7 @@ namespace CKK.Logic.Models
         public ShoppingCartItem? RemoveProduct(int id, int quant) {
             var Existing =
                 from e in Products
-                where id == e.Product?.Id
+                where id == e.Product.Id
                 select e;
             try {
                 if( !Existing.Any() ) {
@@ -88,7 +88,7 @@ namespace CKK.Logic.Models
         public decimal? GetTotal() {
             var GetTotal =
                 from e in Products
-                let TotalPrice = e.Product?.Price * e.Quantity
+                let TotalPrice = e.Product.Price * e.Quantity
                 select TotalPrice;
             foreach(var item in GetTotal) {
                 return item;
