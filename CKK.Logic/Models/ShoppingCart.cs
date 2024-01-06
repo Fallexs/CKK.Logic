@@ -74,8 +74,8 @@ namespace CKK.Logic.Models
                     if( FindExisting.Any() ) {
                         foreach( var item in FindExisting ) {
                             if( item.Quantity - quantity < 0 ) {
+                                item.Quantity -= quantity;
                                 Products.Remove(item);
-                                item.Quantity = 0;
                                 return item;
                             } else item.Quantity -= quantity; return item;
                         }
