@@ -49,6 +49,12 @@ namespace CKK.Logic.Models
                 where id.Equals(e.Product.Id)
                 select e;
             var Product = Existing.First() ?? throw new ProductDoesNotExistException();
+            if( id < 0 ) {
+                throw new InvalidIdException();
+            }
+            if( quant < 0 ) {
+                throw new InventoryItemStockTooLowException();
+            }
             Product.Quantity -= quant;
             if( Product.Quantity < 0 ) {
                 Product.Quantity = 0;
