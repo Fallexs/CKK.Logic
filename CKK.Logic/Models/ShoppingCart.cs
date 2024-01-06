@@ -10,11 +10,11 @@ namespace CKK.Logic.Models
         private Customer Customer { get; set; }
         private List<ShoppingCartItem> Products { get; set; } = new();
         public List<ShoppingCartItem> GetProducts() => Products;
-        public int? GetCustomerId() => Customer.Id;
+        public int GetCustomerId() => Customer.Id;
         public ShoppingCart(Customer cust) {
             Customer = cust;
         }
-        public ShoppingCartItem? GetProductById(int id) {
+        public ShoppingCartItem GetProductById(int id) {
             try {
                 if (id < 0) {
                     throw new InvalidIdException();
@@ -22,16 +22,15 @@ namespace CKK.Logic.Models
             }
             catch (Exception ex) {
                 Console.WriteLine(ex.Message);
-                return null;
             }
             var Product =
                 from e in Products
                 where id == e.Product.Id
                 select e;
-            return Product as ShoppingCartItem;
+            return Product.First();
         }
 
-        public ShoppingCartItem? AddProduct(Product prod, int quant) {
+        public ShoppingCartItem AddProduct(Product prod, int quant) {
             var existing =
                 from e in Products
                 where prod == e.Product
@@ -42,13 +41,9 @@ namespace CKK.Logic.Models
                 }
             } catch( Exception ex ) {
                 Console.WriteLine(ex.Message);
-                return null;
             }
             if( existing.Any() ) {
-                foreach( ShoppingCartItem item in existing ) {
-                    item.Quantity += quant;
-                    return item;
-                }
+                existing.First().Quantity += quant;
             }
             var newProduct = new ShoppingCartItem(prod, quant);
             Products.Add(newProduct);
@@ -56,7 +51,7 @@ namespace CKK.Logic.Models
 
         }
 
-        public ShoppingCartItem? RemoveProduct(int id, int quant) {
+        public ShoppingCartItem RemoveProduct(int id, int quant) {
             var Existing =
                 from e in Products
                 where id == e.Product.Id
@@ -71,29 +66,24 @@ namespace CKK.Logic.Models
             }
             catch (Exception ex) {
                 Console.WriteLine(ex.Message);
-                return null;
             }
-            foreach(var item in Existing) {
-                if( item.Quantity > 0 ) {
-                    item.Quantity -= quant;
-                    if( item.Quantity < 0 ) {
-                        Products.Remove(item);
-                    }
-                    return item;
-                }
+            if(Existing.First().Quantity - quant < 0) {
+                Existing.First().Quantity = 0;
+                Products.Remove(Existing.First());
             }
-            return null;
+            return Existing.First();
         }
 
-        public decimal? GetTotal() {
+        public decimal GetTotal() {
             var GetTotal =
                 from e in Products
                 let TotalPrice = e.Product.Price * e.Quantity
                 select TotalPrice;
+            decimal Total = 0m;
             foreach(var item in GetTotal) {
-                return item;
+                Total += item;
             }
-            return null;
+            return Total;
         }
     }
 }
