@@ -1,5 +1,6 @@
 ﻿using CKK.Logic.Interfaces;
 using CKK.Logic.Exceptions;
+using System.ComponentModel.Design;
 
 namespace CKK.Logic.Models {
     public class Store : Entity, IStore {
@@ -13,16 +14,18 @@ namespace CKK.Logic.Models {
                 var Existing = (
                     from item in Items
                     where prod == item.Product
-                    select item
-                    ).First();
-                if( Existing == null ) {
+                    select item );
+                if( Existing.Any() ) {
+                    foreach(var item in Existing) {
+                        item.Quantity += quantity;
+                        return item;
+                    }
+                } else {
                     var newItem = new StoreItem(prod, quantity);
                     Items.Add(newItem);
                     return newItem;
-                } else {
-                    Existing.Quantity += quantity;
-                    return Existing;
                 }
+                return Existing.Single();
             }
         }
 
