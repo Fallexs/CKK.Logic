@@ -35,21 +35,20 @@ namespace CKK.Logic.Models {
                 select e;
             var Item = FindExisting.First();
             try {
+                Item.Quantity -= quantity;
                 if( !FindExisting.Any() ) {
                     throw new ProductDoesNotExistException();
                 }
-                if ( Item.Quantity - quantity <= 0 ) {
-                    throw new ArgumentOutOfRangeException(nameof(quantity), "Cannot be less than or equal to 0.");
+                if (Item.Quantity < 0) {
+                    throw new InventoryItemStockTooLowException();
                 }
             } catch( ProductDoesNotExistException ex ) {
                 Console.WriteLine(ex.Message);
             } catch ( ArgumentOutOfRangeException ex) {
                 Console.WriteLine(ex.Message);
                 Item.Quantity = 0;
-                Items.Remove(Item);
                 return Item;
             }
-            Item.Quantity -= quantity;
             return Item;
         }
 
