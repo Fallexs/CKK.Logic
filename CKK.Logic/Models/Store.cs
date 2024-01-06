@@ -19,8 +19,9 @@ namespace CKK.Logic.Models {
                 Console.WriteLine(ex.Message);
             }
             if (Item == null) {
-                Item = new StoreItem(prod, quantity);
-                Items.Add(Item);
+                var newItem = new StoreItem(prod, quantity);
+                Items.Add(newItem);
+                return newItem;
             } else {
                 Item.Quantity += quantity;
             }
@@ -33,13 +34,17 @@ namespace CKK.Logic.Models {
                 where id == e.Product.Id
                 select e;
             var Item = FindExisting.First();
-            if( quantity < 0 ) {
-                throw new ArgumentOutOfRangeException(nameof(quantity));
+            try {
+                if( quantity <= 0 ) {
+                    throw new ArgumentOutOfRangeException(nameof(quantity));
+                }
+                if( Item == null ) {
+                    throw new ProductDoesNotExistException();
+                }
+            } catch( Exception ex ) {
+                Console.WriteLine(ex.Message);
             }
-            if( Item == null ) {
-                throw new ProductDoesNotExistException();
-            }
-            if (Item.Quantity - quantity < 0) {
+            if (Item.Quantity - quantity <= 0) {
                 Item.Quantity = 0;
             }
             return Item;
