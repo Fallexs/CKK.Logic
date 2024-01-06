@@ -77,7 +77,7 @@ namespace CKK.Logic.Models
                                 Products.Remove(item);
                                 item.Quantity = 0;
                                 return item;
-                            } else item.Quantity -= quantity;
+                            } else item.Quantity -= quantity; return item;
                         }
                     } else throw new ProductDoesNotExistException();
                 }
