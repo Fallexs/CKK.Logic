@@ -48,17 +48,19 @@ namespace CKK.Logic.Models
                 from e in Products
                 where id.Equals(e.Product.Id)
                 select e;
-            var Product = Existing.FirstOrDefault();
-            if (Product == null) {
+            var Product = Existing.First();
+            if( Product == null ) {
                 throw new ProductDoesNotExistException();
-            } else if (id <= 0) {
+            } else if( id <= 0 ) {
                 throw new InvalidIdException();
-            } else {
-                Product.Quantity -= quant;
-                if (Product.Quantity <= 0) {
-                    Product.Quantity = 0;
-                    Products.Remove(Product);
-                }
+            } else if( quant < 0 ) {
+                throw new InventoryItemStockTooLowException();
+            }
+            Product.Quantity -= quant;
+            if( Product.Quantity < 0 ) {
+                Product.Quantity = 0;
+                Products.Remove(Product);
+
             }
             return Product;
         }
@@ -66,10 +68,11 @@ namespace CKK.Logic.Models
         public decimal GetTotal() {
             var GetTotal =
                 from e in Products
-                let TotalPrice = e.Product.Price * e.Quantity
-                select TotalPrice;
-            decimal start = 0m;
-            var Total = GetTotal.FirstOrDefault() + start;
+                select e;
+            decimal Total = 0m;
+            foreach(var item in GetTotal) {
+                Total += item.GetTotal();
+            }
             return Total;
         }
     }

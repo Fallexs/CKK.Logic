@@ -12,9 +12,7 @@ namespace CKK.Logic.Interfaces {
                 return quantity;
             }
             set {
-                if (value < 0) {
-                    throw new InventoryItemStockTooLowException();
-                } else {
+                if (value >= 0) {
                     quantity = value;
                 }
             }
@@ -24,9 +22,7 @@ namespace CKK.Logic.Interfaces {
             get {
                 return product;
             } set {
-                if (value != null) {
-                    product = value;
-                }
+                product = value;
             }
         }
     }
