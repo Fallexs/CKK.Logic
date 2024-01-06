@@ -22,7 +22,7 @@ namespace CKK.Logic.Models {
             return Item;
         }
 
-        public StoreItem RemoveStoreItem(int id, int quantity) {
+        public StoreItem? RemoveStoreItem(int id, int quantity) {
             var FindExisting =
                 from e in Items
                 where id == e.Product.Id
@@ -31,7 +31,7 @@ namespace CKK.Logic.Models {
             if (quantity <= 0) {
                 throw new ArgumentOutOfRangeException(nameof(quantity));
             } else if (Item == null) {
-                throw new ProductDoesNotExistException();
+                return null;
             } else {
                 Item.Quantity -= quantity;
                 if(Item.Quantity < 0) {
