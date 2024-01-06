@@ -7,7 +7,7 @@ namespace CKK.Logic.Models {
         private List<StoreItem> Items { get; set; } = new();
         public List<StoreItem> GetStoreItems() => Items;
 
-        public StoreItem? AddStoreItem(Product prod, int quantity) {
+        public StoreItem AddStoreItem(Product prod, int quantity) {
             if (quantity <= 0) {
                 throw new InventoryItemStockTooLowException();
             } else {
@@ -21,11 +21,11 @@ namespace CKK.Logic.Models {
                         return item;
                     }
                 } else {
-                    StoreItem newItem = new(prod, quantity);
+                    var newItem = new StoreItem(prod, quantity);
                     Items.Add(newItem);
                     return newItem;
                 }
-                return null;
+                return Existing.Single();
             }
         }
 
