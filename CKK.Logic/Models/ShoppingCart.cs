@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 
 namespace CKK.Logic.Models
 {
-    public class ShoppingCart : IShoppingCart {
+    public class ShoppingCart : IShoppingCart
+    {
         private Customer Customer { get; set; }
         private List<ShoppingCartItem> Products { get; set; } = new();
         public List<ShoppingCartItem> GetProducts() => Products;
@@ -14,55 +15,66 @@ namespace CKK.Logic.Models
             Customer = cust;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod, int quant) {
-            if( quant <= 0 ) {
+        public ShoppingCartItem AddProduct(Product prod, int quant) {
+            if ( quant <= 0 ) {
                 throw new InventoryItemStockTooLowException();
             } else {
                 var Existing = (
                     from product in Products
                     where prod == product.Product
                     select product);
-                if( Existing.Any() ) {
-                    foreach( var product in Products ) {
+                if ( Existing.Any() ) {
+                    foreach(var product in Products ) {
                         product.Quantity += quant;
                         return product;
                     }
                 } else {
-                    ShoppingCartItem newItem = new(prod, quant);
-                    Products.Add(newItem);
-                    return newItem;
+                    var newProduct = new ShoppingCartItem(prod, quant);
+                    Products.Add(newProduct);
+                    return newProduct;
                 }
-                return null;
+                return Existing.Single();
             }
         }
 
         public ShoppingCartItem RemoveProduct(int id, int quant) {
-            var Product = GetProductById(id);
-            if( quant < 0 ) {
+            var Existing = (
+                from product in Products
+                where id == product.Product.Id
+                select product);
+            if ( quant < 0 ) {
                 throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
-            } else if( Product == null ) {
+            } else if ( !Existing.Any() ) {
                 throw new ProductDoesNotExistException();
             } else {
-                Product.Quantity -= quant;
-                if( Product.Quantity < 0 ) {
-                    Product.Quantity = 0;
-                    Products.Remove(Product);
+                foreach(ShoppingCartItem product in Existing) {
+                    product.Quantity -= quant;
+                    if (product.Quantity > 0) {
+                        return product;
+                    } else if (product.Quantity <= 0) {
+                        Products.Remove(product);
+                        return new ShoppingCartItem();
+                    }
                 }
-                return Product;
+                return Existing.Single();
             }
         }
-
         public ShoppingCartItem? GetProductById(int id) {
-            var Existing = (
-            from product in Products
-            where id == product.Product.Id
-            select product);
             if ( id < 0 ) {
                 throw new InvalidIdException();
-            } else if (Existing.Any()) {
-                return Existing.First();
             } else {
-                return null;
+                var Existing = (
+                    from product in Products
+                    where id == product.Product.Id
+                    select product);
+                if ( Existing.Any() ) {
+                    foreach(var product in Products) {
+                        return product;
+                    }
+                } else {
+                    return null;
+                }
+                return Existing.Single();
             }
         }
 
