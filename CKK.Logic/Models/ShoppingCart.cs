@@ -10,7 +10,7 @@ namespace CKK.Logic.Models
         private Customer Customer { get; set; }
         private List<ShoppingCartItem> Products { get; set; } = new();
         public List<ShoppingCartItem> GetProducts() => Products;
-        public int GetCustomerId() => Customer.Id;
+        public int? GetCustomerId() => Customer.Id;
         public ShoppingCart(Customer cust) {
             Customer = cust;
         }
@@ -26,7 +26,7 @@ namespace CKK.Logic.Models
             }
             var Product =
                 from e in Products
-                where e.Product.Id.Equals(id)
+                where id == e.Product?.Id
                 select e;
             return Product as ShoppingCartItem;
         }
@@ -36,55 +36,64 @@ namespace CKK.Logic.Models
                 from e in Products
                 where prod == e.Product
                 select e;
+            try {
+                if( quant < 0 ) {
+                    throw new InventoryItemStockTooLowException();
+                }
+            } catch( Exception ex ) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
             if( existing.Any() ) {
                 foreach( ShoppingCartItem item in existing ) {
                     item.Quantity += quant;
                     return item;
                 }
-            } else {
-                var newProduct = new ShoppingCartItem(prod, quant);
-                Products.Add(newProduct);
-                return newProduct;
             }
+            var newProduct = new ShoppingCartItem(prod, quant);
+            Products.Add(newProduct);
+            return newProduct;
 
-            if( quant <= 0 ) {
-                throw new InventoryItemStockTooLowException();
+        }
+
+        public ShoppingCartItem? RemoveProduct(int id, int quant) {
+            var Existing =
+                from e in Products
+                where id == e.Product?.Id
+                select e;
+            try {
+                if( !Existing.Any() ) {
+                    throw new ProductDoesNotExistException();
+                }
+                if( quant < 0 ) {
+                    throw new InventoryItemStockTooLowException();
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            foreach(var item in Existing) {
+                if( item.Quantity > 0 ) {
+                    item.Quantity -= quant;
+                    if( item.Quantity < 0 ) {
+                        Products.Remove(item);
+                    }
+                    return item;
+                }
             }
             return null;
         }
 
-        public ShoppingCartItem? RemoveProduct(int id, int quant) {
-            try {
-                var Existing =
-                    from e in Products
-                    where id.Equals(e.Product.Id)
-                    select e;
-                var Product = Existing.ToList().DefaultIfEmpty(null).First();
-                if( Product == null ) {
-                    throw new ProductDoesNotExistException();
-                } else if( quant < 0 ) {
-                    throw new InventoryItemStockTooLowException();
-                } else {
-                    return Product;
-                }
-            }
-            catch (ProductDoesNotExistException ex) {
-                Console.WriteLine(ex.Message);
-                return null;
-            }
-            catch (InventoryItemStockTooLowException ex) {
-                Console.WriteLine(ex.Message);
-                return null;
-            }
-        }
-
-        public decimal GetTotal() {
+        public decimal? GetTotal() {
             var GetTotal =
                 from e in Products
-                let TotalPrice = e.Product.Price * e.Quantity
+                let TotalPrice = e.Product?.Price * e.Quantity
                 select TotalPrice;
-            var Total = GetTotal.FirstOrDefault();
-            return Total;
+            foreach(var item in GetTotal) {
+                return item;
+            }
+            return null;
         }
     }
 }

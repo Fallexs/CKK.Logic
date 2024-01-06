@@ -3,9 +3,9 @@ using CKK.Logic.Exceptions;
 
 namespace CKK.Logic.Models {
     public class Product : Entity {
-        private decimal price;
+        private decimal? price;
 
-        public decimal Price {
+        public decimal? Price {
             get {
                 return price;
             }
@@ -13,6 +13,7 @@ namespace CKK.Logic.Models {
                 if( value > 0m ) {
                     price = value;
                 } else throw new ArgumentOutOfRangeException(nameof(value));
+                price = null;
             }
         }
     }
