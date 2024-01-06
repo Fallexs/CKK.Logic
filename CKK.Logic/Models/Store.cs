@@ -30,27 +30,26 @@ namespace CKK.Logic.Models {
         }
 
         public StoreItem RemoveStoreItem(int id, int quantity) {
-            var FindExisting =
-                from e in Items
-                where id == e.Product.Id
-                select e;
-            var Item = FindExisting.First();
-            try {
-                Item.Quantity -= quantity;
-                if( !FindExisting.Any() ) {
-                    throw new ProductDoesNotExistException();
+            var Existing = (
+                from item in Items
+                where id == item.Product.Id
+                select item);
+            if ( quantity < 0 ) {
+                throw new ArgumentOutOfRangeException(nameof(quantity), "Invalid quantity.");
+            } else if ( !Existing.Any() ) {
+                throw new ProductDoesNotExistException();
+            } else {
+                foreach (var item in Existing) {
+                    item.Quantity -= quantity;
+                    if ( item.Quantity < 0 ) {
+                        item.Quantity = 0;
+                        return item;
+                    } else {
+                        return item;
+                    }
                 }
-                if (Item.Quantity < 0) {
-                    throw new InventoryItemStockTooLowException();
-                }
-            } catch( ProductDoesNotExistException ex ) {
-                Console.WriteLine(ex.Message);
-            } catch ( ArgumentOutOfRangeException ex) {
-                Console.WriteLine(ex.Message);
-                Item.Quantity = 0;
-                return Item;
+                return Existing.Single();
             }
-            return Item;
         }
 
         public StoreItem FindStoreItemById(int id) {
