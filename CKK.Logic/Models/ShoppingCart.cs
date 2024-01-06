@@ -68,13 +68,13 @@ namespace CKK.Logic.Models
                 where id == e.Product.Id
                 select e;
             try {
-                if ( quantity < 0 ) {
+                if( quantity < 0 ) {
                     throw new ArgumentOutOfRangeException(nameof(quantity));
                 } else {
                     if( FindExisting.Any() ) {
                         foreach( var item in FindExisting ) {
                             item.Quantity -= quantity;
-                            if (item.Quantity <= 0) {
+                            if( item.Quantity <= 0 ) {
                                 Products.Remove(item);
                             }
                             return item;
@@ -83,6 +83,24 @@ namespace CKK.Logic.Models
                 }
             } catch( Exception ex ) {
                 Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public decimal? GetTotal()
+        {
+            var GetTotal =
+                from e in Products
+                let TotalPrice = e.Product.Price * e.Quantity
+                select TotalPrice;
+            if (GetTotal.Any())
+            {
+                decimal starting = 0m;
+                foreach (var item in GetTotal)
+                {
+                    starting += item;
+                }
+                return starting;
             }
             return null;
         }
