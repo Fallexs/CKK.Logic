@@ -50,7 +50,7 @@ namespace CKK.Logic.Models
                 foreach(ShoppingCartItem product in Existing) {
                     product.Quantity -= quant;
                     if (product.Quantity > 0) {
-                        return product;
+                        return product; 
                     } else if (product.Quantity < 0) {
                         Products.Remove(product);
                         return new ShoppingCartItem();
