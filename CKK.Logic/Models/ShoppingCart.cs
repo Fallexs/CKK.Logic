@@ -1,96 +1,96 @@
-﻿using System.ComponentModel;
-using System.Reflection;
+﻿using CKK.Logic.Interfaces;
+using CKK.Logic.Exceptions;
 
 namespace CKK.Logic.Models
 {
-    public class ShoppingCart
+    public class ShoppingCart : IShoppingCart
     {
-        private Customer _customer { get; set; }
-        private List<ShoppingCartItem> _Products { get; set; } = new();
-        public List<ShoppingCartItem> GetProducts() => _Products;
-        public int Get_CustomerId() => _customer.GetId();
+        private Customer Customer { get; set; }
+        private List<ShoppingCartItem> Products { get; set; } = new();
 
         public ShoppingCart(Customer cust) {
-            _customer = cust;
+            Customer = cust;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod)
-        {
-            if (prod != null) {
-                return AddProduct(prod, 1);
-            }
-            return null;
-        }
+        public int? GetCustomerId() => Customer.Id;
 
-        public ShoppingCartItem? GetProductById(int id)
-        {
-            var GetByID =
-                from e in _Products
-                where id == e.GetProduct().GetId()
-                select e;
-            if (GetByID.Any())
-            {
-                foreach (ShoppingCartItem item in GetByID)
-                {
-                    return item;
+        public ShoppingCartItem? GetProductById(int id) {
+            try {
+                if(id < 0) {
+                    throw new InvalidIdException();
                 }
-            }
-            return null;
-        }
-
-        public ShoppingCartItem? AddProduct(Product prod, int quantity)
-        {
-            var GetExisting =
-                    from e in _Products
-                    where prod == e.GetProduct()
+                var GetByID =
+                    from e in Products
+                    where id == e.Product.Id
                     select e;
-            if (prod != null && quantity > 0)
-            {
-                if (GetExisting.Any())
-                {
-                    foreach (ShoppingCartItem item in GetExisting)
-                    {
-                        item.SetQuantity(item.GetQuantity() + quantity);
+                if( GetByID.Any() ) {
+                    foreach( ShoppingCartItem item in GetByID ) {
                         return item;
                     }
                 }
-                else
-                {
-                    var newItem = new ShoppingCartItem(prod, quantity);
-                    _Products.Add(newItem);
-                    return newItem;
-                }
+                return null;
+            } catch( Exception ex ) {
+                Console.WriteLine(ex.Message);
+                return null;
             }
-            return null;
         }
 
-        public ShoppingCartItem? RemoveProduct(int id, int quantity)
-        {
-            var CheckForExisting =
-                from e in _Products
-                where id == e.GetProduct().GetId()
-                select e;
-            if (CheckForExisting.Any())
-            {
-                foreach (ShoppingCartItem item in CheckForExisting)
-                {
-                    item.SetQuantity(item.GetQuantity() - quantity);
-                    if (item.GetQuantity() <= 0m)
-                    {
-                        item.SetQuantity(0);
-                        _Products.Remove(item);
-                    }
-                    return item;
+        public ShoppingCartItem? AddProduct(Product prod, int quantity) {
+            try {
+                if( quantity <= 0 ) {
+                    throw new InventoryItemStockTooLowException();
                 }
+
+                var FindExisting =
+                    from e in Products
+                    where prod == e.Product
+                    select e;
+                if( FindExisting.Any() ) {
+                    foreach( ShoppingCartItem item in FindExisting ) {
+                        item.Quantity += quantity;
+                        return item;
+                    }
+                }
+                ShoppingCartItem newProduct = new(prod, quantity);
+                Products.Add(newProduct);
+                return newProduct;
+            } catch( Exception ex ) {
+                Console.WriteLine(ex.Message);
+                return null;
             }
-            return null;
+        }
+
+        public ShoppingCartItem? RemoveProduct(int id, int quantity) {
+            try {
+                if( quantity < 0 ) {
+                    throw new ArgumentOutOfRangeException(nameof(quantity));
+                }
+                var FindExisting =
+                    from e in Products
+                    where id == e.Product.Id
+                    select e;
+                if(FindExisting.Any()) {
+                    foreach( ShoppingCartItem item in FindExisting ) {
+                        item.Quantity -= quantity;
+                        if( item.Quantity < 0 ) {
+                            Products.Remove(item);
+                            return item;
+                        }
+                        return item;
+                    }
+                }
+                throw new ProductDoesNotExistException();
+            } catch( Exception ex ) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public decimal? GetTotal()
         {
             var GetTotal =
-                from e in _Products
-                let TotalPrice = e.GetProduct().GetPrice() * e.GetQuantity()
+                from e in Products
+                let TotalPrice = e.Product.Price * e.Quantity
                 select TotalPrice;
             if (GetTotal.Any())
             {
@@ -103,5 +103,7 @@ namespace CKK.Logic.Models
             }
             return null;
         }
+
+        public List<ShoppingCartItem> GetProducts() => Products;
     }
 }

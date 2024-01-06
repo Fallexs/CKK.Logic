@@ -1,13 +1,27 @@
-﻿namespace CKK.Logic.Models {
-    public class Product {
-        private int _id;
-        private string? _name;
-        private decimal _price;
-        public int GetId() => _id;
-        public string? GetName() => _name;
-        public decimal GetPrice() => _price;
-        public void SetId(int id) => _id = id;
-        public void SetName(string name) => _name = name;
-        public void SetPrice(decimal price) => _price = price;
+﻿using CKK.Logic.Interfaces;
+using CKK.Logic.Exceptions;
+
+namespace CKK.Logic.Models {
+    public class Product : Entity {
+        private decimal price;
+
+        public decimal Price {
+            get {
+                return price;
+            }
+            set {
+                try {
+                    if( value < 0 ) {
+                        throw new ArgumentOutOfRangeException(nameof(value));
+                    }
+                    price = value;
+
+                }
+                catch (Exception ex) {
+                    Console.WriteLine(ex.Message);
+                    return;
+                }
+            }
+        }
     }
 }

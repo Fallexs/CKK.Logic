@@ -1,62 +1,73 @@
-﻿namespace CKK.Logic.Models {
-    public class Store {
-        private int _id;
-        private string? _name;
-        private List<StoreItem> _items = new();
-        public int GetId() => _id;
-        public string GetName() => _name ?? "Null";
-        public void SetId(int id) => _id = id;
-        public void SetName(string name) => _name = name;
-        public List<StoreItem> GetStoreItems() => _items;
+﻿using CKK.Logic.Interfaces;
+using CKK.Logic.Exceptions;
+
+namespace CKK.Logic.Models {
+    public class Store : Entity, IStore {
+        private List<StoreItem> Items { get; set; } = new();
 
         public StoreItem? AddStoreItem(Product prod, int quantity) {
-            var SameStoreItem =
-                from e in _items
-                where prod == e.GetProduct()
-                select e;
-            if( prod != null && quantity > 0 ) {
-                if( SameStoreItem.Any() ) {
-                    foreach( StoreItem item in _items ) {
-                        item.SetQuantity(item.GetQuantity() + quantity);
+            try {
+                var FindExisting =
+                    from e in Items
+                    where prod == e.Product
+                    select e;
+                if( quantity <= 0 ) {
+                    throw new InventoryItemStockTooLowException();
+                }
+                if( FindExisting.Any() ) {
+                    foreach( StoreItem item in Items ) {
+                        item.Quantity += quantity;
                         return item;
                     }
-                } else {
-                    StoreItem item = new(prod, quantity);
-                    _items.Add(item);
-                    return item;
                 }
+                StoreItem newStoreItem = new(prod, quantity);
+                Items.Add(newStoreItem);
+                return newStoreItem;
+            } catch( Exception ex ) {
+                Console.WriteLine(ex.Message);
+                return null;
             }
-            return null;
         }
 
         public StoreItem? RemoveStoreItem(int id, int quantity) {
-            var SameStoreItem =
-                from e in _items
-                where id == e.GetProduct().GetId()
-                select e;
-            if( SameStoreItem.Any() ) {
-                foreach(var item in SameStoreItem) {
-                    item.SetQuantity(item.GetQuantity() - quantity);
-                    if(item.GetQuantity() < 0) {
-                        item.SetQuantity(0);
-                    }
-                    return item;
+            try {
+                var SameStoreItem =
+                    from e in Items
+                    where id == e.Product.Id
+                    select e;
+                if ( quantity < 0) {
+                    throw new ArgumentOutOfRangeException(nameof(quantity));
                 }
+                if(SameStoreItem.Any()) {
+                    foreach( StoreItem item in SameStoreItem ) {
+                        item.Quantity -= quantity;
+                        if( item.Quantity < 0 ) {
+                            item.Quantity = 0;
+                        }
+                        return item;
+                    }
+                }
+                throw new ProductDoesNotExistException();
+            } catch( Exception ex ) {
+                Console.WriteLine(ex.Message);
+                return null;
             }
-            return null;
         }
 
         public StoreItem? FindStoreItemById(int id) {
             var FindByID =
-                from e in _items
-                where id == e.GetProduct().GetId()
+                from e in Items
+                where id == e.Product.Id
                 select e;
             if( FindByID.Any() ) {
-                foreach(var item in FindByID) {
+                foreach( StoreItem item in FindByID ) {
                     return item;
                 }
             }
             return null;
         }
+        
+
+        public List<StoreItem> GetStoreItems() => Items;
     }
 }
