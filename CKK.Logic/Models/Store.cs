@@ -65,7 +65,7 @@ namespace CKK.Logic.Models {
                         return item;
                     }
                 } else {
-                    return new StoreItem();
+                    return null;
                 }
                 return Existing.Single();
             }
