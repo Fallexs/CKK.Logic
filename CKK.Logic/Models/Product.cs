@@ -12,7 +12,7 @@ namespace CKK.Logic.Models {
             set {
                 if( value > 0m ) {
                     price = value;
-                }
+                } else throw new ArgumentOutOfRangeException(nameof(value));
             }
         }
     }
