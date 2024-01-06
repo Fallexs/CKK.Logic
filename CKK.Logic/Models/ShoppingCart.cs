@@ -18,7 +18,7 @@ namespace CKK.Logic.Models
                 from e in Products
                 where id.Equals(e.Product.Id)
                 select e;
-            var Product = Existing.FirstOrDefault();
+            var Product = Existing.First();
             if (id < 0) {
                 throw new InvalidIdException();
             }
@@ -33,7 +33,7 @@ namespace CKK.Logic.Models
                 from e in Products
                 where prod.Equals(e.Product)
                 select e;
-            var Product = existing.FirstOrDefault();
+            var Product = existing.First();
             if (Product == null) {
                 Product = new ShoppingCartItem(prod, quant);
                 Products.Add(Product);
@@ -48,14 +48,7 @@ namespace CKK.Logic.Models
                 from e in Products
                 where id.Equals(e.Product.Id)
                 select e;
-            var Product = Existing.First();
-            if( Product == null ) {
-                throw new ProductDoesNotExistException();
-            } else if( id <= 0 ) {
-                throw new InvalidIdException();
-            } else if( quant < 0 ) {
-                throw new InventoryItemStockTooLowException();
-            }
+            var Product = Existing.First() ?? throw new ProductDoesNotExistException();
             Product.Quantity -= quant;
             if( Product.Quantity < 0 ) {
                 Product.Quantity = 0;
