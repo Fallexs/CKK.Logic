@@ -36,20 +36,21 @@ namespace CKK.Logic.Models
                 from e in Products
                 where prod == e.Product
                 select e;
-            if (prod != null) {
-                if(existing.Any()) {
-                    foreach(ShoppingCartItem item in existing) {
-                        item.Quantity += quant;
-                        return item;
-                    }
-                } else {
-                    var newProduct = new ShoppingCartItem(prod, quant);
-                    Products.Add(newProduct);
-                    return newProduct;
+            if( existing.Any() ) {
+                foreach( ShoppingCartItem item in existing ) {
+                    item.Quantity += quant;
+                    return item;
                 }
-            } else if (quant <= 0) {
+            } else {
+                var newProduct = new ShoppingCartItem(prod, quant);
+                Products.Add(newProduct);
+                return newProduct;
+            }
+
+            if( quant <= 0 ) {
                 throw new InventoryItemStockTooLowException();
-            } return null;
+            }
+            return null;
         }
 
         public ShoppingCartItem? RemoveProduct(int id, int quant) {
