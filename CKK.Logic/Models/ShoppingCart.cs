@@ -8,7 +8,7 @@ namespace CKK.Logic.Models
     public class ShoppingCart : IShoppingCart
     {
         private Customer Customer { get; set; }
-        private List<ShoppingCartItem> Products = new();
+        public List<ShoppingCartItem> Products = new();
         public List<ShoppingCartItem> GetProducts() => Products;
         public int GetCustomerId() => Customer.Id;
         public ShoppingCart(Customer cust) {
@@ -47,32 +47,28 @@ namespace CKK.Logic.Models
         }
 
         public ShoppingCartItem? RemoveProduct(int id, int quant) {
-            var Existing =
-                from e in Products
-                where id.Equals(e.Product.Id)
-                select e;
-            var Product = Existing.First();
             try {
+                var Existing =
+                    from e in Products
+                    where id.Equals(e.Product.Id)
+                    select e;
+                var Product = Existing.ToList().DefaultIfEmpty(null).First();
                 if( Product == null ) {
                     throw new ProductDoesNotExistException();
-                } else if( id <= 0 ) {
-                    throw new InvalidIdException();
                 } else if( quant < 0 ) {
                     throw new InventoryItemStockTooLowException();
+                } else {
+                    return Product;
                 }
             }
-            catch (Exception ex) {
+            catch (ProductDoesNotExistException ex) {
                 Console.WriteLine(ex.Message);
                 return null;
             }
-            int _ = Product.Quantity - quant;
-            if( _ < 0 ) {
-                Product.Quantity = 0;
-                Products.Remove(Product);
-            } else if ( _ > 0 ) {
-                Product.Quantity = _;
+            catch (InventoryItemStockTooLowException ex) {
+                Console.WriteLine(ex.Message);
+                return null;
             }
-            return Product;
         }
 
         public decimal GetTotal() {
