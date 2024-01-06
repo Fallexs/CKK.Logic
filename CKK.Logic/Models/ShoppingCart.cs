@@ -43,21 +43,22 @@ namespace CKK.Logic.Models
                 where id == product.Product.Id
                 select product);
             if ( quant < 0 ) {
-                throw new ArgumentOutOfRangeException(nameof(quant), "Cannot be less than 0.");
+                throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
             } else if ( !Existing.Any() ) {
                 throw new ProductDoesNotExistException();
             } else {
                 foreach (var product in Products ) {
-                    if ( product.Quantity - quant <= 0 ) {
+                    product.Quantity -= quant;
+                    if ( product.Quantity < 0 ) {
                         product.Quantity = 0;
                         Products.Remove(product);
                         return product;
                     } else {
-                        product.Quantity -= quant;
                         return product;
                     }
                 }
-            } return Existing.Single();
+                return Existing.Single();
+            }
         }
         public ShoppingCartItem GetProductById(int id) {
             try {
