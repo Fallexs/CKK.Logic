@@ -14,78 +14,77 @@ namespace CKK.Logic.Models
 
         public int GetCustomerId() => Customer.Id;
 
-        public ShoppingCartItem GetProductById(int id) {
+        public ShoppingCartItem? GetProductById(int id) {
             var FindExisting =
                 from e in Products
                 where id == e.Product.Id
                 select e;
             try {
+                if( FindExisting.Any() ) {
+                    foreach(ShoppingCartItem item in FindExisting) {
+                        return item;
+                    }
+                }
                 if(id < 0) {
                     throw new InvalidIdException();
                 }
                 if(!FindExisting.Any()) {
                     throw new ProductDoesNotExistException();
                 }
+                return null;
             } catch( Exception ex ) {
                 Console.WriteLine(ex.Message);
+                return null;
             }
-            if( FindExisting.Any() ) {
-                foreach(ShoppingCartItem item in FindExisting) {
-                    return item;
-                }
-            }
-            throw new ProductDoesNotExistException();
         }
 
         public ShoppingCartItem? AddProduct(Product prod, int quantity) {
+            var existing =
+                from e in GetProducts()
+                where prod == e.Product
+                select e;
             try {
-                if( quantity <= 0 ) {
-                    throw new InventoryItemStockTooLowException();
-                }
-
-                var FindExisting =
-                    from e in Products
-                    where prod == e.Product
-                    select e;
-                if( FindExisting.Any() ) {
-                    foreach( ShoppingCartItem item in FindExisting ) {
-                        item.Quantity += quantity;
-                        return item;
+                if( quantity > 0 ) {
+                    if( existing.Any() ) {
+                        foreach (var item in existing) {
+                            item.Quantity += quantity;
+                            return item;
+                        }
+                    } else {
+                        var newItem = new ShoppingCartItem(prod, quantity);
+                        Products.Add(newItem);
+                        return newItem;
                     }
-                }
-                ShoppingCartItem newProduct = new(prod, quantity);
-                Products.Add(newProduct);
-                return newProduct;
+                } else throw new InventoryItemStockTooLowException();
             } catch( Exception ex ) {
                 Console.WriteLine(ex.Message);
-                return null;
             }
+            return null;
         }
 
         public ShoppingCartItem? RemoveProduct(int id, int quantity) {
+            var FindExisting =
+                from e in Products
+                where id == e.Product.Id
+                select e;
             try {
-                if( quantity < 0 ) {
+                if ( quantity < 0 ) {
                     throw new ArgumentOutOfRangeException(nameof(quantity));
-                }
-                var FindExisting =
-                    from e in Products
-                    where id == e.Product.Id
-                    select e;
-                if(FindExisting.Any()) {
-                    foreach( ShoppingCartItem item in FindExisting ) {
-                        item.Quantity -= quantity;
-                        if( item.Quantity < 0 ) {
-                            Products.Remove(item);
-                            return item;
+                } else {
+                    if( FindExisting.Any() ) {
+                        foreach( var item in FindExisting ) {
+                            if( item.Quantity - quantity < 0 ) {
+                                Products.Remove(item);
+                                item.Quantity = 0;
+                                return item;
+                            } else item.Quantity -= quantity;
                         }
-                        return item;
-                    }
+                    } else throw new ProductDoesNotExistException();
                 }
-                throw new ProductDoesNotExistException();
             } catch( Exception ex ) {
                 Console.WriteLine(ex.Message);
-                return null;
             }
+            return null;
         }
 
         public decimal? GetTotal()
