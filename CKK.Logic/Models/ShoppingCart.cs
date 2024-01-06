@@ -61,9 +61,7 @@ namespace CKK.Logic.Models
                     where id == product.Product.Id
                     select product);
                 if ( Existing.Any() ) {
-                    foreach(var product in Products) {
-                        return product;
-                    }
+                    return Existing.First();
                 }
                 return null;
             }
