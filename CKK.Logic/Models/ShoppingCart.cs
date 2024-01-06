@@ -48,7 +48,7 @@ namespace CKK.Logic.Models
                 throw new ProductDoesNotExistException();
             } else {
                 foreach (var product in Products ) {
-                    if ( product.Quantity - quant < 0 ) {
+                    if ( product.Quantity - quant <= 0 ) {
                         product.Quantity = 0;
                         Products.Remove(product);
                         return product;
