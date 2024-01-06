@@ -1,5 +1,6 @@
 ﻿using CKK.Logic.Interfaces;
 using CKK.Logic.Exceptions;
+using System.Linq.Expressions;
 
 
 namespace CKK.Logic.Models
@@ -7,25 +8,26 @@ namespace CKK.Logic.Models
     public class ShoppingCart : IShoppingCart
     {
         private Customer Customer { get; set; }
-        private List<ShoppingCartItem> Products { get; set; } = new();
+        private List<ShoppingCartItem> Products = new();
         public List<ShoppingCartItem> GetProducts() => Products;
         public int GetCustomerId() => Customer.Id;
         public ShoppingCart(Customer cust) {
             Customer = cust;
         }
-        public ShoppingCartItem GetProductById(int id) {
-            var Existing =
+        public ShoppingCartItem? GetProductById(int id) {
+            try {
+                if (id < 0) {
+                    throw new InvalidIdException();
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            var Product =
                 from e in Products
-                where id.Equals(e.Product.Id)
+                where e.Product.Id.Equals(id)
                 select e;
-            var Product = Existing.FirstOrDefault();
-            if (id < 0) {
-                throw new InvalidIdException();
-            }
-            if (Product == null) {
-                throw new ProductDoesNotExistException();
-            }
-            return Product;
+            return Product as ShoppingCartItem;
         }
 
         public ShoppingCartItem AddProduct(Product prod, int quant) {
@@ -60,7 +62,6 @@ namespace CKK.Logic.Models
             if( _ < 0 ) {
                 Product.Quantity = 0;
                 Products.Remove(Product);
-                return null;
             } else if ( _ > 0 ) {
                 Product.Quantity = _;
             }

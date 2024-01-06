@@ -41,19 +41,15 @@ namespace CKK.Logic.Models {
             return Item;
         }
 
-        public StoreItem? FindStoreItemById(int id) {
+        public StoreItem FindStoreItemById(int id) {
             var FindByID =
                 from e in Items
                 where id.Equals(e.Product.Id)
                 select e;
             if (id < 0) {
                 throw new InvalidIdException();
-            } else if (FindByID.Any()) {
-                foreach(var item in FindByID) {
-                    return item;
-                }
             }
-            return null;
+            return FindByID.First();
         }
         
 
