@@ -15,7 +15,7 @@ namespace CKK.Logic.Models
             Customer = cust;
         }
 
-        public ShoppingCartItem AddProduct(Product prod, int quant) {
+        public ShoppingCartItem? AddProduct(Product prod, int quant) {
             if ( quant <= 0 ) {
                 throw new InventoryItemStockTooLowException();
             } else {
@@ -29,11 +29,11 @@ namespace CKK.Logic.Models
                         return product;
                     }
                 } else {
-                    var newProduct = new ShoppingCartItem(prod, quant);
-                    Products.Add(newProduct);
-                    return newProduct;
+                    ShoppingCartItem newItem = new(prod, quant);
+                    Products.Add(newItem);
+                    return newItem;
                 }
-                return Existing.Single();
+                return null;
             }
         }
 

@@ -17,5 +17,7 @@ namespace CKK.Logic.Models {
                 }
             }
         }
+
+        public Product() { }
     }
 }
