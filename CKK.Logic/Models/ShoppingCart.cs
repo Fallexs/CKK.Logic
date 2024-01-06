@@ -34,7 +34,7 @@ namespace CKK.Logic.Models
         public ShoppingCartItem? AddProduct(Product prod, int quant) {
             var existing =
                 from e in Products
-                where prod.Equals(e.Product)
+                where prod == e.Product
                 select e;
             if (prod != null && quant > 0) {
                 if(existing.Any()) {
