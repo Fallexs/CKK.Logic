@@ -4,28 +4,26 @@ using CKK.Logic.Exceptions;
 namespace CKK.Logic.Models {
     public class Store : Entity, IStore {
         private List<StoreItem> Items { get; set; } = new();
+        public List<StoreItem> GetStoreItems() => Items;
 
         public StoreItem AddStoreItem(Product prod, int quantity) {
-            var FindExisting =
-                from e in Items
-                where prod == e.Product
-                select e;
-            var Item = FindExisting.First();
-            try {
-                if( quantity <= 0 ) {
-                    throw new InventoryItemStockTooLowException();
-                }
-            } catch ( Exception ex ) { 
-                Console.WriteLine(ex.Message);
-            }
-            if (Item == null) {
-                var newItem = new StoreItem(prod, quantity);
-                Items.Add(newItem);
-                return newItem;
+            if (quantity <= 0) {
+                throw new InventoryItemStockTooLowException();
             } else {
-                Item.Quantity += quantity;
+                var Existing = (
+                    from item in Items
+                    where prod == item.Product
+                    select item
+                    ).First();
+                if( Existing == null ) {
+                    var newItem = new StoreItem(prod, quantity);
+                    Items.Add(newItem);
+                    return newItem;
+                } else {
+                    Existing.Quantity += quantity;
+                    return Existing;
+                }
             }
-            return Item;
         }
 
         public StoreItem RemoveStoreItem(int id, int quantity) {
@@ -68,6 +66,5 @@ namespace CKK.Logic.Models {
         }
         
 
-        public List<StoreItem> GetStoreItems() => Items;
     }
 }
