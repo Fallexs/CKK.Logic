@@ -5,8 +5,7 @@ using System.Linq.Expressions;
 
 namespace CKK.Logic.Models
 {
-    public class ShoppingCart : IShoppingCart
-    {
+    public class ShoppingCart : IShoppingCart {
         private Customer Customer { get; set; }
         private List<ShoppingCartItem> Products { get; set; } = new();
         public List<ShoppingCartItem> GetProducts() => Products;
@@ -16,15 +15,15 @@ namespace CKK.Logic.Models
         }
 
         public ShoppingCartItem? AddProduct(Product prod, int quant) {
-            if ( quant <= 0 ) {
+            if( quant <= 0 ) {
                 throw new InventoryItemStockTooLowException();
             } else {
                 var Existing = (
                     from product in Products
                     where prod == product.Product
                     select product);
-                if ( Existing.Any() ) {
-                    foreach(var product in Products ) {
+                if( Existing.Any() ) {
+                    foreach( var product in Products ) {
                         product.Quantity += quant;
                         return product;
                     }
@@ -42,27 +41,21 @@ namespace CKK.Logic.Models
                 from product in Products
                 where id == product.Product.Id
                 select product);
-            if ( quant < 0 ) {
+            if( quant < 0 ) {
                 throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
-            } else if ( !Existing.Any() ) {
+            } else if( !Existing.Any() ) {
                 throw new ProductDoesNotExistException();
-            } else {
-                foreach(ShoppingCartItem product in Existing) {
-                    product.Quantity -= quant;
-                    if (product.Quantity > 0) {
-                        return product;
-                    } else if (product.Quantity == 0) {
-                        return product;
-                    } else {
-                        var placeholder = product;
-                        Products.Remove(product);
-                        return placeholder;
-                        
-                    }
-                }
+            } else if( Existing.Single().Quantity < quant ) {
+                Existing.Single().Quantity -= quant;
                 return Existing.Single();
-            }
+            } else if ( Existing.Single().Quantity - quant < 0) {
+                Products.Remove(Existing.Single());
+                return Existing.Single();
+            } else {
+                Existing.Single().Quantity = 0;
+                return Existing.Single();
         }
+    }
         public ShoppingCartItem? GetProductById(int id) {
             if ( id < 0 ) {
                 throw new InvalidIdException();
