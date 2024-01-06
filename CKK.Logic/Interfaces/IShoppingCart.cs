@@ -8,7 +8,7 @@ namespace CKK.Logic.Interfaces {
         List<ShoppingCartItem> GetProducts();
         ShoppingCartItem GetProductById(int id);
         ShoppingCartItem AddProduct(Product prod, int quant);
-        ShoppingCartItem RemoveProduct(int id, int quant);
+        ShoppingCartItem? RemoveProduct(int id, int quant);
         decimal GetTotal();
     }
 }

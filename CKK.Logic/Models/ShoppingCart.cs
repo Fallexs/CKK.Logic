@@ -43,7 +43,7 @@ namespace CKK.Logic.Models
             return Product;
         }
 
-        public ShoppingCartItem RemoveProduct(int id, int quant) {
+        public ShoppingCartItem? RemoveProduct(int id, int quant) {
             var Existing =
                 from e in Products
                 where id.Equals(e.Product.Id)
@@ -60,6 +60,7 @@ namespace CKK.Logic.Models
             if( _ < 0 ) {
                 Product.Quantity = 0;
                 Products.Remove(Product);
+                return null;
             } else if ( _ > 0 ) {
                 Product.Quantity = _;
             }
