@@ -36,7 +36,7 @@ namespace CKK.Logic.Models
                 from e in Products
                 where prod == e.Product
                 select e;
-            if (prod != null && quant > 0) {
+            if (prod != null) {
                 if(existing.Any()) {
                     foreach(ShoppingCartItem item in existing) {
                         item.Quantity += quant;
