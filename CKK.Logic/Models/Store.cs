@@ -44,13 +44,16 @@ namespace CKK.Logic.Models {
         public StoreItem? FindStoreItemById(int id) {
             var FindByID =
                 from e in Items
-                where id == e.Product.Id
+                where id.Equals(e.Product.Id)
                 select e;
-            var Item = FindByID.FirstOrDefault();
             if (id < 0) {
                 throw new InvalidIdException();
-            } 
-            return Item;
+            } else if (FindByID.Any()) {
+                foreach(var item in FindByID) {
+                    return item;
+                }
+            }
+            return null;
         }
         
 

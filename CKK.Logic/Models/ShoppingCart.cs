@@ -68,7 +68,8 @@ namespace CKK.Logic.Models
                 from e in Products
                 let TotalPrice = e.Product.Price * e.Quantity
                 select TotalPrice;
-            var Total = GetTotal.FirstOrDefault();
+            decimal start = 0m;
+            var Total = GetTotal.FirstOrDefault() + start;
             return Total;
         }
     }
