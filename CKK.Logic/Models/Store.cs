@@ -25,7 +25,7 @@ namespace CKK.Logic.Models {
         public StoreItem RemoveStoreItem(int id, int quantity) {
             var FindExisting =
                 from e in Items
-                where id.Equals(e.Product.Id)
+                where id == e.Product?.Id
                 select e;
             var Item = FindExisting.First();
             if( quantity < 0 ) {
@@ -44,7 +44,7 @@ namespace CKK.Logic.Models {
         public StoreItem FindStoreItemById(int id) {
             var FindByID =
                 from e in Items
-                where id.Equals(e.Product.Id)
+                where id == e.Product?.Id
                 select e;
             if (id < 0) {
                 throw new InvalidIdException();
