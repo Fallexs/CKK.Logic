@@ -8,6 +8,6 @@ namespace CKK.Logic.Models {
             Quantity = quantity;
         }
 
-        public decimal? GetTotal() => Quantity * Product.Price;
+        public decimal GetTotal() => Quantity * Product.Price;
     }
 }

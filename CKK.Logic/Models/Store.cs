@@ -10,10 +10,15 @@ namespace CKK.Logic.Models {
                 from e in Items
                 where prod == e.Product
                 select e;
-            var Item = FindExisting.FirstOrDefault();
-            if (quantity <= 0) {
-                throw new InventoryItemStockTooLowException();
-            } else if (Item == null) {
+            var Item = FindExisting.First();
+            try {
+                if( quantity <= 0 ) {
+                    throw new InventoryItemStockTooLowException();
+                }
+            } catch ( Exception ex ) { 
+                Console.WriteLine(ex.Message);
+            }
+            if (Item == null) {
                 Item = new StoreItem(prod, quantity);
                 Items.Add(Item);
             } else {
@@ -34,21 +39,24 @@ namespace CKK.Logic.Models {
             if( Item == null ) {
                 throw new ProductDoesNotExistException();
             }
-            Item.Quantity -= quantity;
-            if( Item.Quantity < 0 ) {
+            if (Item.Quantity - quantity < 0) {
                 Item.Quantity = 0;
             }
             return Item;
         }
 
         public StoreItem FindStoreItemById(int id) {
+            try {
+                if( id < 0 ) {
+                    throw new InvalidIdException();
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
             var FindByID =
                 from e in Items
                 where id == e.Product.Id
                 select e;
-            if (id < 0) {
-                throw new InvalidIdException();
-            }
             return FindByID.First();
         }
         
