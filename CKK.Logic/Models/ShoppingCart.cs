@@ -22,6 +22,7 @@ namespace CKK.Logic.Models
             }
             catch (Exception ex) {
                 Console.WriteLine(ex.Message);
+                return null;
             }
             var Product =
                 from e in Products
@@ -51,12 +52,18 @@ namespace CKK.Logic.Models
                 where id.Equals(e.Product.Id)
                 select e;
             var Product = Existing.First();
-            if( Product == null ) {
-                throw new ProductDoesNotExistException();
-            } else if( id <= 0 ) {
-                throw new InvalidIdException();
-            } else if( quant < 0 ) {
-                throw new InventoryItemStockTooLowException();
+            try {
+                if( Product == null ) {
+                    throw new ProductDoesNotExistException();
+                } else if( id <= 0 ) {
+                    throw new InvalidIdException();
+                } else if( quant < 0 ) {
+                    throw new InventoryItemStockTooLowException();
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
             }
             int _ = Product.Quantity - quant;
             if( _ < 0 ) {

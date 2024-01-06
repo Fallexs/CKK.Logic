@@ -4,7 +4,7 @@ using CKK.Logic.Exceptions;
 
 namespace CKK.Logic.Interfaces {
     public abstract class InventoryItem {
-        private Product product;
+        public Product Product { get; set; } = new();
         private int quantity;
 
         public int Quantity {
@@ -15,14 +15,6 @@ namespace CKK.Logic.Interfaces {
                 if( value >= 0 ) {
                     quantity = value;
                 } else throw new InventoryItemStockTooLowException();
-            }
-        }
-
-        public Product Product {
-            get {
-                return product;
-            } set {
-                product = value;
             }
         }
     }

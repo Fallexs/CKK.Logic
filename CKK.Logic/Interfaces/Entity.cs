@@ -3,7 +3,7 @@
 namespace CKK.Logic.Interfaces {
     public abstract class Entity {
         private int id;
-        private string name = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         public int Id {
             get {
@@ -13,15 +13,6 @@ namespace CKK.Logic.Interfaces {
                 if( value >= 0 ) {
                     id = value;
                 } else throw new InvalidIdException();
-            }
-        }
-
-        public string Name {
-            get {
-                return name;
-            }
-            set {
-                name = value;
             }
         }
     }
