@@ -8,8 +8,8 @@ namespace CKK.Logic.Models
     public class ShoppingCart : IShoppingCart
     {
         private Customer Customer { get; set; }
-        public List<ShoppingCartItem>? Products;
-        public List<ShoppingCartItem>? GetProducts() => Products;
+        private List<ShoppingCartItem> Products { get; set; } = new();
+        public List<ShoppingCartItem> GetProducts() => Products;
         public int GetCustomerId() => Customer.Id;
         public ShoppingCart(Customer cust) {
             Customer = cust;
