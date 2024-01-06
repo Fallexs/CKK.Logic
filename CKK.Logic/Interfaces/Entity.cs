@@ -2,10 +2,10 @@
 
 namespace CKK.Logic.Interfaces {
     public abstract class Entity {
-        private int? id;
+        private int id;
         public string Name { get; set; } = string.Empty;
 
-        public int? Id {
+        public int Id {
             get {
                 return id;
             }
@@ -13,7 +13,7 @@ namespace CKK.Logic.Interfaces {
                 if( value >= 0 ) {
                     id = value;
                 } else throw new InvalidIdException();
-                id = null;
+                return;
             }
         }
     }
