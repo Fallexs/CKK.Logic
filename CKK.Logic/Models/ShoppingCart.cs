@@ -1,110 +1,75 @@
 ﻿using CKK.Logic.Interfaces;
 using CKK.Logic.Exceptions;
 
+
 namespace CKK.Logic.Models
 {
     public class ShoppingCart : IShoppingCart
     {
         private Customer Customer { get; set; }
         private List<ShoppingCartItem> Products { get; set; } = new();
-
+        public List<ShoppingCartItem> GetProducts() => Products;
+        public int GetCustomerId() => Customer.Id;
         public ShoppingCart(Customer cust) {
             Customer = cust;
         }
-
-        public int GetCustomerId() => Customer.Id;
-
-        public ShoppingCartItem? GetProductById(int id) {
-            var FindExisting =
+        public ShoppingCartItem GetProductById(int id) {
+            var Existing =
                 from e in Products
-                where id == e.Product.Id
+                where id.Equals(e.Product.Id)
                 select e;
-            try {
-                if( FindExisting.Any() ) {
-                    foreach(ShoppingCartItem item in FindExisting) {
-                        return item;
-                    }
-                }
-                if(id < 0) {
-                    throw new InvalidIdException();
-                }
-                if(!FindExisting.Any()) {
-                    throw new ProductDoesNotExistException();
-                }
-                return null;
-            } catch( Exception ex ) {
-                Console.WriteLine(ex.Message);
-                return null;
+            var Product = Existing.FirstOrDefault();
+            if (id < 0) {
+                throw new InvalidIdException();
             }
+            if (Product == null) {
+                throw new ProductDoesNotExistException();
+            }
+            return Product;
         }
 
-        public ShoppingCartItem? AddProduct(Product prod, int quantity) {
+        public ShoppingCartItem AddProduct(Product prod, int quant) {
             var existing =
-                from e in GetProducts()
-                where prod == e.Product
+                from e in Products
+                where prod.Equals(e.Product)
                 select e;
-            try {
-                if( quantity > 0 ) {
-                    if( existing.Any() ) {
-                        foreach (var item in existing) {
-                            item.Quantity += quantity;
-                            return item;
-                        }
-                    } else {
-                        var newItem = new ShoppingCartItem(prod, quantity);
-                        Products.Add(newItem);
-                        return newItem;
-                    }
-                } else throw new InventoryItemStockTooLowException();
-            } catch( Exception ex ) {
-                Console.WriteLine(ex.Message);
+            var Product = existing.FirstOrDefault();
+            if (Product == null) {
+                Product = new ShoppingCartItem(prod, quant);
+                Products.Add(Product);
+            } else {
+                Product.Quantity += quant;
             }
-            return null;
+            return Product;
         }
 
-        public ShoppingCartItem? RemoveProduct(int id, int quantity) {
-            var FindExisting =
-                from e in GetProducts()
-                where id == e.Product.Id
+        public ShoppingCartItem RemoveProduct(int id, int quant) {
+            var Existing =
+                from e in Products
+                where id.Equals(e.Product.Id)
                 select e;
-            try {
-                if( quantity < 0 ) {
-                    throw new ArgumentOutOfRangeException(nameof(quantity));
-                } else {
-                    if( FindExisting.Any() ) {
-                        foreach( var item in FindExisting ) {
-                            item.Quantity -= quantity;
-                            if( item.Quantity <= 0 ) {
-                                Products.Remove(item);
-                            }
-                            return item;
-                        }
-                    } else throw new ProductDoesNotExistException();
+            var Product = Existing.FirstOrDefault();
+            if (Product == null) {
+                throw new ProductDoesNotExistException();
+            } else if (id < 0) {
+                throw new InvalidIdException();
+            } else {
+                Product.Quantity -= quant;
+                if (Product.Quantity <= 0) {
+                    Product.Quantity = 0;
+                    Products.Remove(Product);
                 }
-            } catch( Exception ex ) {
-                Console.WriteLine(ex.Message);
             }
-            return null;
+            return Product;
         }
 
-        public decimal? GetTotal()
-        {
+        public decimal GetTotal() {
             var GetTotal =
                 from e in Products
                 let TotalPrice = e.Product.Price * e.Quantity
                 select TotalPrice;
-            if (GetTotal.Any())
-            {
-                decimal starting = 0m;
-                foreach (var item in GetTotal)
-                {
-                    starting += item;
-                }
-                return starting;
-            }
-            return null;
+            var Total = GetTotal.FirstOrDefault();
+            return Total;
         }
-
-        public List<ShoppingCartItem> GetProducts() => Products;
     }
 }

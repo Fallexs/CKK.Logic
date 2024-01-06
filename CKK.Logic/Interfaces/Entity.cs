@@ -3,16 +3,18 @@
 namespace CKK.Logic.Interfaces {
     public abstract class Entity {
         private int id;
-        private string name = "";
+        private string name = string.Empty;
 
         public int Id {
             get {
                 return id;
             }
             set {
-                if( value > 0 ) {
+                if (value < 0) {
+                    throw new InvalidIdException();
+                } else {
                     id = value;
-                } else throw new InvalidIdException();
+                }
             }
         }
 
