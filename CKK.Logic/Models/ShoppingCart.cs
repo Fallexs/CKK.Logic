@@ -18,7 +18,7 @@ namespace CKK.Logic.Models
                 from e in Products
                 where id.Equals(e.Product.Id)
                 select e;
-            var Product = Existing.First();
+            var Product = Existing.FirstOrDefault();
             if (id < 0) {
                 throw new InvalidIdException();
             }
@@ -33,7 +33,7 @@ namespace CKK.Logic.Models
                 from e in Products
                 where prod.Equals(e.Product)
                 select e;
-            var Product = existing.First();
+            var Product = existing.FirstOrDefault();
             if (Product == null) {
                 Product = new ShoppingCartItem(prod, quant);
                 Products.Add(Product);
@@ -48,18 +48,20 @@ namespace CKK.Logic.Models
                 from e in Products
                 where id.Equals(e.Product.Id)
                 select e;
-            var Product = Existing.First() ?? throw new ProductDoesNotExistException();
-            if( id < 0 ) {
+            var Product = Existing.First();
+            if( Product == null ) {
+                throw new ProductDoesNotExistException();
+            } else if( id <= 0 ) {
                 throw new InvalidIdException();
-            }
-            if( quant < 0 ) {
+            } else if( quant < 0 ) {
                 throw new InventoryItemStockTooLowException();
             }
-            Product.Quantity -= quant;
-            if( Product.Quantity < 0 ) {
+            int _ = Product.Quantity - quant;
+            if( _ < 0 ) {
                 Product.Quantity = 0;
                 Products.Remove(Product);
-
+            } else if ( _ > 0 ) {
+                Product.Quantity = _;
             }
             return Product;
         }
@@ -67,11 +69,9 @@ namespace CKK.Logic.Models
         public decimal GetTotal() {
             var GetTotal =
                 from e in Products
-                select e;
-            decimal Total = 0m;
-            foreach(var item in GetTotal) {
-                Total += item.GetTotal();
-            }
+                let TotalPrice = e.Product.Price * e.Quantity
+                select TotalPrice;
+            var Total = GetTotal.FirstOrDefault();
             return Total;
         }
     }
