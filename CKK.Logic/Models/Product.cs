@@ -10,10 +10,11 @@ namespace CKK.Logic.Models {
                 return price;
             }
             set {
-                if( value > 0m ) {
+                if ( value < 0 ) {
+                    throw new ArgumentOutOfRangeException(nameof(Price), "Invalid Amount.");
+                } else {
                     price = value;
-                } else throw new ArgumentOutOfRangeException(nameof(value));
-                return;
+                }
             }
         }
     }

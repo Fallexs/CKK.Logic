@@ -12,10 +12,11 @@ namespace CKK.Logic.Interfaces {
                 return quantity;
             }
             set {
-                if( value >= 0 ) {
+                if ( value < 0 ) {
+                    throw new InventoryItemStockTooLowException();
+                } else {
                     quantity = value;
-                } else throw new InventoryItemStockTooLowException();
-                return;
+                }
             }
         }
     }
