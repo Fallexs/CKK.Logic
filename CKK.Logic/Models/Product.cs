@@ -10,17 +10,10 @@ namespace CKK.Logic.Models {
                 return price;
             }
             set {
-                try {
-                    if( value < 0 ) {
-                        throw new ArgumentOutOfRangeException(nameof(value));
-                    }
-                    price = value;
-
+                if( value < 0m ) {
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
-                catch (Exception ex) {
-                    Console.WriteLine(ex.Message);
-                    return;
-                }
+                price = value;
             }
         }
     }

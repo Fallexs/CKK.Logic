@@ -12,27 +12,29 @@ namespace CKK.Logic.Models
             Customer = cust;
         }
 
-        public int? GetCustomerId() => Customer.Id;
+        public int GetCustomerId() => Customer.Id;
 
-        public ShoppingCartItem? GetProductById(int id) {
+        public ShoppingCartItem GetProductById(int id) {
+            var FindExisting =
+                from e in Products
+                where id == e.Product.Id
+                select e;
             try {
                 if(id < 0) {
                     throw new InvalidIdException();
                 }
-                var GetByID =
-                    from e in Products
-                    where id == e.Product.Id
-                    select e;
-                if( GetByID.Any() ) {
-                    foreach( ShoppingCartItem item in GetByID ) {
-                        return item;
-                    }
+                if(!FindExisting.Any()) {
+                    throw new ProductDoesNotExistException();
                 }
-                return null;
             } catch( Exception ex ) {
                 Console.WriteLine(ex.Message);
-                return null;
             }
+            if( FindExisting.Any() ) {
+                foreach(ShoppingCartItem item in FindExisting) {
+                    return item;
+                }
+            }
+            throw new ProductDoesNotExistException();
         }
 
         public ShoppingCartItem? AddProduct(Product prod, int quantity) {

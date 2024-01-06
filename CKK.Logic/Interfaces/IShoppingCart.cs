@@ -2,7 +2,7 @@
 
 namespace CKK.Logic.Interfaces {
     public interface IShoppingCart {
-        int? GetCustomerId();
+        int GetCustomerId();
         ShoppingCartItem? AddProduct(Product prod, int quant);
         ShoppingCartItem? RemoveProduct(int id, int quant);
         decimal? GetTotal();

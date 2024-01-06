@@ -10,7 +10,7 @@ namespace CKK.Logic.Interfaces {
                 return id;
             }
             set {
-                if( id < 0 ) {
+                if( value < 0 ) {
                     throw new InvalidIdException();
                 }
                 id = value;
