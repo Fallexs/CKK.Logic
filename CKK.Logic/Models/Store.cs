@@ -40,11 +40,11 @@ namespace CKK.Logic.Models {
                 throw new ProductDoesNotExistException();
             } else {
                 foreach (var item in Existing) {
-                    item.Quantity -= quantity;
-                    if ( item.Quantity < 0 ) {
+                    if ( item.Quantity - quantity < 0 ) {
                         item.Quantity = 0;
                         return item;
                     } else {
+                        item.Quantity -= quantity;
                         return item;
                     }
                 }
