@@ -52,7 +52,7 @@ namespace CKK.Logic.Models {
             }
         }
 
-        public StoreItem FindStoreItemById(int id) {
+        public StoreItem? FindStoreItemById(int id) {
             if ( id < 0 ) {
                 throw new InvalidIdException();
             } else {
@@ -65,7 +65,7 @@ namespace CKK.Logic.Models {
                         return item;
                     }
                 }
-                return Existing.Single();
+                return Existing.Single()??null;
             }
         }
         
