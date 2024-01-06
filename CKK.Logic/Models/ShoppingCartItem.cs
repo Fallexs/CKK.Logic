@@ -8,6 +8,8 @@ namespace CKK.Logic.Models {
             Quantity = quantity;
         }
 
+        public ShoppingCartItem() { }
+
         public decimal GetTotal() => Quantity * Product.Price;
     }
 }

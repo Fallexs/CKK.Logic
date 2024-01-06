@@ -37,7 +37,7 @@ namespace CKK.Logic.Models
             }
         }
 
-        public ShoppingCartItem? RemoveProduct(int id, int quant) {
+        public ShoppingCartItem RemoveProduct(int id, int quant) {
             var Existing = (
                 from product in Products
                 where id == product.Product.Id
@@ -49,13 +49,14 @@ namespace CKK.Logic.Models
             } else {
                 foreach(ShoppingCartItem product in Existing) {
                     product.Quantity -= quant;
-                    if (product.Quantity < 0m) {
-                        product.Quantity = 0;
+                    if (product.Quantity > 0) {
+                        return product;
+                    } else if (product.Quantity <= 0) {
                         Products.Remove(product);
+                        return new ShoppingCartItem();
                     }
-                    return product;
                 }
-                return null;
+                return Existing.Single();
             }
         }
         public ShoppingCartItem? GetProductById(int id) {
