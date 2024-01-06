@@ -62,20 +62,23 @@ namespace CKK.Logic.Models
                 return Existing.Single();
             }
         }
-        public ShoppingCartItem GetProductById(int id) {
-            try {
-                if (id < 0) {
-                    throw new InvalidIdException();
+        public ShoppingCartItem? GetProductById(int id) {
+            if ( id < 0 ) {
+                throw new InvalidIdException();
+            } else {
+                var Existing = (
+                    from product in Products
+                    where id == product.Product.Id
+                    select product);
+                if ( Existing.Any() ) {
+                    foreach(var product in Products) {
+                        return product;
+                    }
+                } else {
+                    return null;
                 }
+                return Existing.Single();
             }
-            catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
-            var Product =
-                from e in Products
-                where id == e.Product.Id
-                select e;
-            return Product.First();
         }
 
         public decimal GetTotal() {
