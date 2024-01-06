@@ -53,16 +53,15 @@ namespace CKK.Logic.Models
         }
 
         public ShoppingCartItem? GetProductById(int id) {
+            var Existing = (
+            from product in Products
+            where id == product.Product.Id
+            select product);
             if ( id < 0 ) {
                 throw new InvalidIdException();
+            } else if (Existing.Any()) {
+                return Existing.First();
             } else {
-                var Existing = (
-                    from product in Products
-                    where id == product.Product.Id
-                    select product);
-                if ( Existing.Any() ) {
-                    return Existing.First();
-                }
                 return null;
             }
         }
