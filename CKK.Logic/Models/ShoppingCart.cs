@@ -51,9 +51,13 @@ namespace CKK.Logic.Models
                     product.Quantity -= quant;
                     if (product.Quantity > 0) {
                         return product;
-                    } else if (product.Quantity <= 0) {
+                    } else if (product.Quantity == 0) {
+                        return product;
+                    } else {
+                        var placeholder = product;
                         Products.Remove(product);
-                        return new ShoppingCartItem();
+                        return placeholder;
+                        
                     }
                 }
                 return Existing.Single();
