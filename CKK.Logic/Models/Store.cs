@@ -55,19 +55,8 @@ namespace CKK.Logic.Models {
         public StoreItem? FindStoreItemById(int id) {
             if ( id < 0 ) {
                 throw new InvalidIdException();
-            } else {
-                var Existing = (
-                    from item in Items
-                    where id == item.Product.Id
-                    select item);
-                if ( Existing.Any() ) {
-                    foreach (var item in Existing ) {
-                        return item;
-                    }
-                } else {
-                    return null;
-                }
-                return Existing.Single();
+            }
+                return Items.SingleOrDefault(product => id == product.Product.Id);
             }
         }
         
