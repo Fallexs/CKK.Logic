@@ -37,28 +37,30 @@ namespace CKK.Logic.Models
             }
         }
 
-        public ShoppingCartItem RemoveProduct(int id, int quant) {
-            var Existing = (
-                from product in Products
-                where id == product.Product.Id
-                select product);
-            if ( quant < 0 ) {
+        public ShoppingCartItem? RemoveProduct(int id, int quant) {
+            // prevents bad input
+            if( quant < 0 ) {
                 throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
-            } else if ( !Existing.Any() ) {
-                throw new ProductDoesNotExistException();
-            } else {
-                foreach(ShoppingCartItem product in Existing) {
-                    product.Quantity -= quant;
-                    if (product.Quantity > 0) {
-                        return product;
-                    } else {
-                        Products.Remove(product);
-                        return new ShoppingCartItem();
-                    }
-                }
-                return Existing.Single();
             }
+
+            var existing = Products
+
+                .SingleOrDefault(product => id == product.Product.Id);
+            if( existing is null ) {
+
+                throw new ProductDoesNotExistException();
+            }
+
+            existing.Quantity -= quant;
+
+            if( existing.Quantity > 0 ) {
+                return existing;
+            }
+
+            Products.Remove(existing);
+            return null; // ?
         }
+
         public ShoppingCartItem? GetProductById(int id) {
             if ( id < 0 ) {
                 throw new InvalidIdException();
