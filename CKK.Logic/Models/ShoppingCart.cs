@@ -59,13 +59,10 @@ namespace CKK.Logic.Models
         }
 
         public ShoppingCartItem? GetProductById(int id) {
-            try {
                 if ( id < 0 ) {
                     throw new InvalidIdException();
                 }
-            } catch {
-                return null;
-            }
+
             return Products.SingleOrDefault(product => id == product.Product.Id);
         }
 
