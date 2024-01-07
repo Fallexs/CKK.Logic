@@ -1,5 +1,6 @@
 ﻿using CKK.Logic.Interfaces;
 using CKK.Logic.Exceptions;
+using System.Reflection.Metadata.Ecma335;
 
 
 namespace CKK.Logic.Models
@@ -31,19 +32,16 @@ namespace CKK.Logic.Models
             if( quantity <= 0 ) {
                 throw new InventoryItemStockTooLowException();
             }
-            if( Products.Count == 0 ) {
-                Products.Add(new ShoppingCartItem(prod, quantity));
-                return Products [ 0 ];
+            var Existing = Products.Where(item => prod == item.Product).ToList();
+            if( Existing.Count == 0 ) {
+                var addNew = new ShoppingCartItem(prod, quantity);
+                Products.Add(addNew);
+                return addNew;
             }
-            for( int i = 0; i < Products.Count; i++ ) {
-                if( Products [ i ].Product.Id == prod.Id ) {
-                    Products [ i ].Quantity = (Products [ i ].Quantity + quantity);
-                    return Products [ i ];
-                }
-
+            if (Existing.Any()) {
+                Existing.Single().Quantity += quantity;
             }
-            Products.Add(new ShoppingCartItem(prod, quantity));
-            return Products.Last();
+            return Existing.Single();
         }
         public ShoppingCartItem RemoveProduct(int id, int quantity) {
             if( quantity < 0 ) {
