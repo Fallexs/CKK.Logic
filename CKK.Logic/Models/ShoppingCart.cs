@@ -64,7 +64,7 @@ namespace CKK.Logic.Models
                 throw new InvalidIdException();
             }
 
-            return Products.FirstOrDefault(product => id == product.Product.Id);
+            return Products.SingleOrDefault(product => id == product.Product.Id);
         }
 
         public decimal GetTotal() {
