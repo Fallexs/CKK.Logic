@@ -6,74 +6,69 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace CKK.Logic.Models
 {
-    public class ShoppingCart : IShoppingCart
-    {
-        public Customer Customer { get; set; }
-        public List<ShoppingCartItem> Products { get; set; }
-        public List<ShoppingCartItem> GetProducts() => Products;
-        public int GetCustomerId() => Customer.Id;
-        public ShoppingCart(Customer cust) {
-            Customer = cust;
-            Products = new List<ShoppingCartItem>();
+    public class Store : Entity, IStore {
+        public Store() {
+            items = new List<StoreItem>();
         }
 
-        public ShoppingCartItem AddProduct(Product prod, int quant) {
-            if ( quant <= 0 ) {
+        public List<StoreItem> items { get; set; }
+        public StoreItem AddStoreItem(Product prod, int quantity) {
+            if( quantity <= 0 ) {
                 throw new InventoryItemStockTooLowException();
-            }
-            var existing = Products.SingleOrDefault(item => prod == item.Product);
-            if ( existing != null ) {
-                existing.Quantity += quant;
-                return existing;
+
             }
 
-            Products.Add(new ShoppingCartItem(prod, quant));
-            return Products.Last();
-        }
-
-        public ShoppingCartItem RemoveProduct(int id, int quant) {
-
-            var existing = Products.SingleOrDefault(product => id == product.Product.Id);
-                if( quant < 0 ) {
-                    throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
+            //checks if stock is empty
+            if( items.Count == 0 ) {
+                items.Add(new StoreItem(prod, quantity));
+                return items [ 0 ];
+            }
+            //checks if product is already in store
+            for( int i = 0; i < items.Count; i++ ) {
+                if( items [ i ].Product.Id == prod.Id ) {
+                    items [ i ].Quantity = (items [ i ].Quantity + quantity);
+                    return items [ i ];
                 }
-
-                if( existing is null ) {
-
-                    throw new ProductDoesNotExistException();
-                }
-            existing.Quantity -= quant;
-
-            if(existing.Quantity - quant <= 0 ) {
-                Products.Remove(existing);
-                return new ShoppingCartItem(null, 0);
             }
-            return existing;
-        }
+            //adds product if not present in current stock
+            items.Add(new StoreItem(prod, quantity));
+            return items.Last();
 
-        public ShoppingCartItem GetProductById(int id) {
-                if ( id < 0 ) {
+
+        }
+        public StoreItem RemoveStoreItem(int id, int quantity) {
+            if( quantity < 0 ) {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            for( int i = 0; i < items.Count; i++ ) {
+                if( items [ i ].Product.Id == id ) {
+                    if( items [ i ].Quantity - quantity <= 0 ) {
+                        items [ i ].Quantity = (0);
+                        return items [ i ];
+                    }
+                    items [ i ].Quantity = (items [ i ].Quantity - quantity);
+                    return items [ i ];
+                }
+            }
+            throw new ProductDoesNotExistException();
+        }
+        public List<StoreItem> GetStoreItems() {
+            return items;
+        }
+        public StoreItem FindStoreItemById(int id) {
+            if( id < 0 ) {
                 throw new InvalidIdException();
-                } 
-
-            var existing = Products.SingleOrDefault(product => id == product.Product.Id);
-
-            if (existing is null) {
-                return null;
             }
-            return existing;
+            List<int> ids = items.Select(x => x.Product.Id).ToList();
+            for( int i = 0; i < items.Count; i++ ) {
+                if( ids [ i ] == id ) {
+
+                    return items [ i ];
+                }
+            }
+            return null;
         }
 
-        public decimal GetTotal() {
-            var GetTotal =
-                from e in Products
-                let TotalPrice = e.Product.Price * e.Quantity
-                select TotalPrice;
-            decimal Total = 0m;
-            foreach(var item in GetTotal) {
-                Total += item;
-            }
-            return Total;
-        }
     }
 }
