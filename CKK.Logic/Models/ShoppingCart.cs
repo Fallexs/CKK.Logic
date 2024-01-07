@@ -57,7 +57,7 @@ namespace CKK.Logic.Models
                     Products.Remove(Existing.Single());
                     return new ShoppingCartItem(null, 0);
                 }
-            if( Existing.First() == null) {
+            if(!Existing.Any()) {
                 throw new ProductDoesNotExistException();
             }
                 Existing.First().Quantity = (Existing.First().Quantity - quantity);
