@@ -53,15 +53,15 @@ namespace CKK.Logic.Models
                 throw new ArgumentOutOfRangeException(nameof(quantity));
             }
             var Existing = Products.Where(prod => id == prod.Product.Id).ToList();
+            if ( Existing.Count == 0 ) {
+                throw new ProductDoesNotExistException();
+            }
                 if( Existing.Single().Quantity - quantity <= 0 ) {
                     Products.Remove(Existing.Single());
                     return new ShoppingCartItem(null, 0);
                 }
-            if(Existing.Any()) {
                 Existing.First().Quantity = (Existing.First().Quantity - quantity);
                 return Existing.First();
-            }
-            throw new ProductDoesNotExistException();
         }
         public decimal GetTotal() {
             decimal total = Products.Sum(x => x.GetTotal());
