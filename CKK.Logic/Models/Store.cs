@@ -52,7 +52,7 @@ namespace CKK.Logic.Models {
             }
         }
 
-        public StoreItem? FindStoreItemById(int id) {
+        public StoreItem FindStoreItemById(int id) {
             if ( id < 0 ) {
                 throw new InvalidIdException();
             }
