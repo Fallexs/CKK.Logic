@@ -56,7 +56,11 @@ namespace CKK.Logic.Models {
             if ( id < 0 ) {
                 throw new InvalidIdException();
             }
-                return Items.SingleOrDefault(product => id == product.Product.Id);
+            var existing = Items.SingleOrDefault(product => id == product.Product.Id);
+            if (existing == null) {
+                return new StoreItem(null, 0);
+            }
+            return existing;
         }
         
 

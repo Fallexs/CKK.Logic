@@ -2,7 +2,7 @@
 
 namespace CKK.Logic.Models {
     public class StoreItem : InventoryItem {
-        public StoreItem(Product product, int quantity) {
+        public StoreItem(Product? product, int quantity) {
             Product = product;
             Quantity = quantity;
         }
