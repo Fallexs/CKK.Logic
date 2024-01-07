@@ -43,9 +43,7 @@ namespace CKK.Logic.Models
                 throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
             }
 
-            var existing = Products
-
-                .SingleOrDefault(product => id == product.Product.Id);
+            var existing = Products.SingleOrDefault(product => id == product.Product.Id);
             if( existing is null ) {
 
                 throw new ProductDoesNotExistException();
