@@ -57,11 +57,11 @@ namespace CKK.Logic.Models
                     Products.Remove(Existing.Single());
                     return new ShoppingCartItem(null, 0);
                 }
-            if(!Existing.Any()) {
-                throw new ProductDoesNotExistException();
-            }
+            if(Existing.Any()) {
                 Existing.First().Quantity = (Existing.First().Quantity - quantity);
                 return Existing.First();
+            }
+            throw new ProductDoesNotExistException();
         }
         public decimal GetTotal() {
             decimal total = Products.Sum(x => x.GetTotal());
