@@ -57,7 +57,6 @@ namespace CKK.Logic.Models {
                 throw new InvalidIdException();
             }
                 return Items.SingleOrDefault(product => id == product.Product.Id);
-            }
         }
         
 
