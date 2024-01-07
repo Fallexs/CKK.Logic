@@ -62,20 +62,9 @@ namespace CKK.Logic.Models
         public ShoppingCartItem? GetProductById(int id) {
             if ( id < 0 ) {
                 throw new InvalidIdException();
-            } else {
-                var Existing = (
-                    from product in Products
-                    where id == product.Product.Id
-                    select product);
-                if ( Existing.Any() ) {
-                    foreach(var product in Products) {
-                        return product;
-                    }
-                } else {
-                    return null;
-                }
-                return Existing.Single();
             }
+
+            return Products.FirstOrDefault(product => id == product.Product.Id);
         }
 
         public decimal GetTotal() {
