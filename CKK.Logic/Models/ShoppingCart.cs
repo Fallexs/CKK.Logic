@@ -21,14 +21,11 @@ namespace CKK.Logic.Models
             if( id < 0 ) {
                 throw new InvalidIdException();
             }
-            List<int> Existing = Products.Select(x => x.Product.Id).ToList();
-            for( int i = 0; i < Existing.Count; i++ ) {
-
-                if( Existing [ i ] == id ) {
-                    return Products [ i ];
-                }
+            var Existing = Products.Where(prod => id == prod.Product.Id).ToList();
+            if ( Existing.Count == 0 ) {
+                return null;
             }
-            return null;
+            return Existing.Single();
         }
         public ShoppingCartItem AddProduct(Product prod, int quantity) {
             if( quantity <= 0 ) {
@@ -63,6 +60,7 @@ namespace CKK.Logic.Models
                 Existing.First().Quantity = (Existing.First().Quantity - quantity);
                 return Existing.First();
         }
+
         public decimal GetTotal() {
             decimal total = Products.Sum(x => x.GetTotal());
             return total;
