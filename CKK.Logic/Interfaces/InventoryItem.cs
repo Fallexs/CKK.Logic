@@ -4,7 +4,9 @@ using CKK.Logic.Exceptions;
 
 namespace CKK.Logic.Interfaces {
     public abstract class InventoryItem {
-        public Product Product { get; set; } = new();
+
+        private Product? product;
+        public Product Product { get { return product; } set { product = value; } }
         private int quantity;
 
         public int Quantity {

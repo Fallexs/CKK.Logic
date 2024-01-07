@@ -3,12 +3,10 @@
 namespace CKK.Logic.Models {
     public class ShoppingCartItem : InventoryItem {
 
-        public ShoppingCartItem(Product product, int quantity) {
+        public ShoppingCartItem(Product? product, int quantity) {
             Product = product;
             Quantity = quantity;
         }
-
-        public ShoppingCartItem() { }
 
         public decimal GetTotal() => Quantity * Product.Price;
     }

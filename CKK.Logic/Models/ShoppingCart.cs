@@ -38,17 +38,16 @@ namespace CKK.Logic.Models
         }
 
         public ShoppingCartItem? RemoveProduct(int id, int quant) {
-            // prevents bad input
-            if( quant < 0 ) {
-                throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
-            }
 
             var existing = Products.SingleOrDefault(product => id == product.Product.Id);
-            if( existing is null ) {
+                if( quant < 0 ) {
+                    throw new ArgumentOutOfRangeException(nameof(quant), "Invalid Quantity.");
+                }
 
-                throw new ProductDoesNotExistException();
-            }
+                if( existing is null ) {
 
+                    throw new ProductDoesNotExistException();
+                }
             existing.Quantity -= quant;
 
             if( existing.Quantity > 0 ) {
@@ -56,14 +55,17 @@ namespace CKK.Logic.Models
             }
 
             Products.Remove(existing);
-            return null; // ?
+            return new ShoppingCartItem(null, 0);
         }
 
         public ShoppingCartItem? GetProductById(int id) {
-            if ( id < 0 ) {
-                throw new InvalidIdException();
+            try {
+                if ( id < 0 ) {
+                    throw new InvalidIdException();
+                }
+            } catch {
+                return null;
             }
-
             return Products.SingleOrDefault(product => id == product.Product.Id);
         }
 
